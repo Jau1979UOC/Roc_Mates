@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemàtiques 1r ESO</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap');
+:root{--bg:#f0f4ff;--surface:#fff;--surface2:#f7f9ff;--border:#e2e8f8;--text:#1a1f3a;--text2:#5a6180;--accent:#4f6ef7;--accent-light:#eef1ff;--green:#22c55e;--green-light:#dcfce7;--red:#ef4444;--purple:#8b5cf6;--radius:14px;--shadow:0 2px 12px rgba(79,110,247,.08);--shadow-lg:0 8px 32px rgba(79,110,247,.13);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.app{display:flex;min-height:100vh;}
+.sidebar{width:280px;min-width:280px;background:var(--surface);border-right:1.5px solid var(--border);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;overflow:hidden;}
+.sidebar-header{padding:24px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#4f6ef7,#7c3aed);color:#fff;}
+.sidebar-header h1{font-family:Nunito,sans-serif;font-size:18px;font-weight:900;line-height:1.2;}
+.sidebar-header p{font-size:12px;opacity:.8;margin-top:4px;}
+.progress-bar-wrap{background:rgba(255,255,255,.2);border-radius:8px;height:6px;margin-top:12px;overflow:hidden;}
+.progress-bar-fill{background:#fff;height:100%;border-radius:8px;transition:width .4s;}
+.progress-text{font-size:11px;opacity:.85;margin-top:6px;}
+.sidebar-nav{flex:1;overflow-y:auto;padding:12px 0;}
+.unit-item{margin:2px 10px;}
+.unit-btn{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:10px 12px;border-radius:10px;display:flex;align-items:center;gap:10px;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;color:var(--text2);transition:all .15s;}
+.unit-btn:hover,.unit-btn.active{background:var(--accent-light);color:var(--accent);}
+.unit-btn.done{color:var(--green);}
+.unit-num{width:26px;height:26px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;transition:all .15s;}
+.unit-btn.active .unit-num{background:var(--accent);color:#fff;}
+.unit-btn.done .unit-num{background:var(--green-light);color:var(--green);}
+.unit-progress{margin-left:auto;font-size:10px;color:var(--text2);font-weight:600;}
+.subnav{display:none;padding:2px 10px 4px 48px;}
+.subnav.open{display:block;}
+.sub-btn{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:8px;font-size:12px;color:var(--text2);font-family:'Nunito Sans',sans-serif;display:flex;align-items:center;gap:8px;transition:all .15s;}
+.sub-btn:hover,.sub-btn.active{background:var(--accent-light);color:var(--accent);}
+.sub-btn.done{color:var(--green);}
+.sub-dot{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0;transition:all .15s;}
+.sub-btn.active .sub-dot{background:var(--accent);}
+.sub-btn.done .sub-dot{background:var(--green);}
+.main{flex:1;display:flex;flex-direction:column;min-height:100vh;overflow:hidden;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 32px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);}
+.topbar-title{font-family:Nunito,sans-serif;font-size:16px;font-weight:800;color:var(--accent);cursor:pointer;}
+.done-btn{margin-left:auto;padding:8px 18px;border-radius:10px;background:var(--green-light);color:var(--green);border:none;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:13px;display:none;align-items:center;gap:6px;transition:all .15s;}
+.done-btn:hover,.done-btn.marked{background:var(--green);color:#fff;}
+.content{flex:1;overflow-y:auto;padding:32px;}
+.home{max-width:800px;margin:0 auto;}
+.home-hero{background:linear-gradient(135deg,#4f6ef7,#7c3aed);border-radius:20px;padding:36px;color:#fff;margin-bottom:28px;}
+.home-hero h2{font-family:Nunito,sans-serif;font-size:28px;font-weight:900;margin-bottom:8px;}
+.home-hero p{opacity:.85;font-size:15px;line-height:1.6;}
+.home-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;}
+.stat{background:rgba(255,255,255,.15);border-radius:12px;padding:14px;text-align:center;}
+.stat-num{font-family:Nunito,sans-serif;font-size:28px;font-weight:900;}
+.stat-label{font-size:12px;opacity:.8;margin-top:2px;}
+.units-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.unit-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:14px;}
+.unit-card:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+.unit-card-num{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:Nunito,sans-serif;font-size:15px;font-weight:900;flex-shrink:0;}
+.unit-card-body{flex:1;}
+.unit-card-title{font-family:Nunito,sans-serif;font-size:14px;font-weight:800;margin-bottom:4px;}
+.unit-card-sub{font-size:11px;color:var(--text2);}
+.unit-card-progress{font-size:11px;font-weight:700;margin-top:6px;}
+.mini-bar{height:4px;background:var(--border);border-radius:4px;margin-top:4px;overflow:hidden;}
+.mini-bar-fill{height:100%;border-radius:4px;transition:width .4s;}
+.lesson-container{max-width:780px;margin:0 auto;}
+.lesson-header{margin-bottom:24px;}
+.lesson-tag{display:inline-block;background:var(--accent-light);color:var(--accent);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:8px;font-family:Nunito,sans-serif;text-transform:uppercase;letter-spacing:.04em;}
+.lesson-title{font-family:Nunito,sans-serif;font-size:24px;font-weight:900;color:var(--text);}
+.tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+.tab{padding:8px 18px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:13px;font-family:Nunito,sans-serif;font-weight:700;color:var(--text2);transition:all .15s;}
+.tab:hover{border-color:var(--accent);color:var(--accent);}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.panel{display:none;}.panel.active{display:block;}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px;}
+.card-title{font-family:Nunito,sans-serif;font-size:15px;font-weight:800;margin-bottom:10px;color:var(--text);}
+.tip{font-size:13px;color:var(--text2);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 8px 8px 0;background:var(--accent-light);margin-top:10px;line-height:1.6;}
+.formula-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;font-family:Nunito,sans-serif;font-size:1.2rem;font-weight:700;margin:10px 0;}
+.ex{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px 18px;margin:8px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.ex-q{font-size:15px;flex:1;min-width:160px;}
+.ex-inp{width:90px;font-size:14px;text-align:center;padding:6px;border:1.5px solid var(--border);border-radius:8px;font-family:'Nunito Sans',sans-serif;}
+.ex-inp:focus{outline:none;border-color:var(--accent);}
+.check-btn{padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:13px;color:var(--text);transition:all .15s;}
+.check-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent);}
+.fb-ok{color:var(--green);font-size:13px;font-weight:700;}
+.fb-wrong{color:var(--red);font-size:13px;font-weight:700;}
+.hint-link{font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline;}
+.yn-btn{padding:6px 20px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:14px;transition:all .15s;}
+.yn-btn:hover{background:var(--accent-light);border-color:var(--accent);}
+.yn-ok{background:var(--green-light)!important;border-color:var(--green)!important;color:var(--green)!important;}
+.yn-wrong{background:#fee2e2!important;border-color:var(--red)!important;color:var(--red)!important;}
+.new-btn{margin-top:14px;padding:9px 20px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:13px;color:var(--text2);transition:all .15s;}
+.new-btn:hover{background:var(--accent-light);color:var(--accent);border-color:var(--accent);}
+.progress-line{font-size:13px;color:var(--text2);margin-top:12px;font-weight:600;}
+.level-tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:10px;font-family:Nunito,sans-serif;}
+.lv1{background:#e0f2fe;color:#0369a1;}.lv2{background:#ede9fe;color:#6d28d9;}.lv3{background:#fee2e2;color:#b91c1c;}
+sup{font-size:.65em;vertical-align:super;}
+.coming-soon{text-align:center;padding:60px 20px;color:var(--text2);}
+.coming-soon .icon{font-size:48px;margin-bottom:16px;}
+.coming-soon h3{font-family:Nunito,sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.coming-soon p{font-size:14px;line-height:1.6;}
+.u1{background:#eef1ff;color:#4f6ef7;}.u2{background:#fce7f3;color:#db2777;}.u3{background:#fef3c7;color:#d97706;}.u4{background:#dcfce7;color:#16a34a;}.u5{background:#f5f3ff;color:#7c3aed;}.u6{background:#fff7ed;color:#ea580c;}.u7{background:#e0f2fe;color:#0284c7;}.u8{background:#fdf2f8;color:#a21caf;}.u9{background:#f0fdf4;color:#15803d;}.u10{background:#fff1f2;color:#be123c;}.u11{background:#f0f9ff;color:#0369a1;}.u12{background:#f7fee7;color:#4d7c0f;}
+.slider{width:100%;margin:8px 0;}
+.slider-row{display:flex;align-items:center;gap:12px;margin:10px 0;}
+.slider-val{font-family:Nunito,sans-serif;font-weight:800;font-size:1.1rem;min-width:32px;color:var(--accent);}
+.num-line{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;}
+.nl-box{padding:5px 12px;border-radius:8px;font-weight:700;font-size:14px;font-family:Nunito,sans-serif;}
+.nl-pos{background:#eef1ff;color:#4f6ef7;}.nl-neg{background:#fee2e2;color:#ef4444;}.nl-zero{background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
+@media(max-width:700px){.sidebar{width:240px;min-width:240px;}.units-grid{grid-template-columns:1fr;}.content{padding:16px;}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h1>📐 Mates 1r ESO</h1>
+    <p>Curs complet interactiu</p>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="global-bar" style="width:0%"></div></div>
+    <div class="progress-text" id="global-text">0 / 78 apartats completats</div>
+  </div>
+  <nav class="sidebar-nav" id="sidebar-nav"></nav>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <span class="topbar-title" id="topbar-info" onclick="goHome()">📐 Matemàtiques 1r ESO</span>
+    <button class="done-btn" id="done-btn" onclick="toggleDone()">☑ Marcar com a fet</button>
+  </div>
+  <div class="content" id="content"></div>
+</main>
+</div>
+<script>
+const CURRICULUM=[
+  {id:1,title:'Divisibilitat',color:'u1',icon:'🔢',units:[
+    {id:'1-1',title:'Potències. Operacions amb potències'},
+    {id:'1-2',title:'Divisibilitat de nombres naturals'},
+    {id:'1-3',title:"Múltiples d'un nombre"},
+    {id:'1-4',title:"Divisors d'un nombre"},
+    {id:'1-5',title:'Nombres primers i compostos'},
+    {id:'1-6',title:'Descomposició en factors'},
+    {id:'1-7',title:'Màxim comú divisor'},
+    {id:'1-8',title:'Mínim comú múltiple'},
+  ]},
+  {id:2,title:'Nombres enters',color:'u2',icon:'➖',units:[
+    {id:'2-1',title:'Nombres enters'},
+    {id:'2-2',title:'Comparació de nombres enters'},
+    {id:'2-3',title:'Suma i resta de dos nombres enters'},
+    {id:'2-4',title:'Suma i resta de diversos nombres enters'},
+    {id:'2-5',title:'Multiplicació i divisió de nombres enters'},
+    {id:'2-6',title:'Potències de nombres enters'},
+    {id:'2-7',title:'Arrel quadrada de nombres enters'},
+    {id:'2-8',title:'Operacions combinades de nombres enters'},
+  ]},
+  {id:3,title:'Fraccions',color:'u3',icon:'½',units:[
+    {id:'3-1',title:'Fraccions'},{id:'3-2',title:'Fraccions pròpies i impròpies'},
+    {id:'3-3',title:'Fraccions equivalents'},{id:'3-4',title:'Comparació de fraccions'},
+    {id:'3-5',title:'Suma i resta de fraccions'},{id:'3-6',title:'Multiplicació de fraccions'},
+    {id:'3-7',title:'Divisió de fraccions'},{id:'3-8',title:'Operacions combinades amb fraccions'},
+  ]},
+  {id:4,title:'Nombres decimals',color:'u4',icon:'0,5',units:[
+    {id:'4-1',title:'Nombres decimals'},{id:'4-2',title:'Comparació de nombres decimals'},
+    {id:'4-3',title:'Aproximació de nombres decimals'},{id:'4-4',title:'Multiplicació i divisió per la unitat seguida de zeros'},
+    {id:'4-5',title:'Suma, resta i multiplicació de nombres decimals'},{id:'4-6',title:'Divisió de nombres decimals'},
+    {id:'4-7',title:"Expressió d'una fracció com a nombre decimal"},{id:'4-8',title:'Classificació de nombres decimals'},
+  ]},
+  {id:5,title:'Àlgebra',color:'u5',icon:'x',units:[
+    {id:'5-1',title:'Expressions algebraiques'},{id:'5-2',title:'Monomis'},
+    {id:'5-3',title:'Polinomis. Operacions'},{id:'5-4',title:'Equacions'},
+    {id:'5-5',title:"Elements d'una equació"},{id:'5-6',title:'Equacions equivalents'},
+    {id:'5-7',title:'Resolució d\'equacions de primer grau'},{id:'5-8',title:'Resolució de problemes amb equacions'},
+  ]},
+  {id:6,title:'Proporcionalitat i percentatges',color:'u6',icon:'%',units:[
+    {id:'6-1',title:'Raó i proporció'},{id:'6-2',title:'Magnituds directament proporcionals'},
+    {id:'6-3',title:'Problemes de proporcionalitat directa'},{id:'6-4',title:'Repartiments directament proporcionals'},
+    {id:'6-5',title:'Percentatges'},{id:'6-6',title:'Problemes amb percentatges'},
+    {id:'6-7',title:'Augments i disminucions percentuals'},
+  ]},
+  {id:7,title:'Rectes i angles',color:'u7',icon:'📏',units:[
+    {id:'7-1',title:'Rectes'},{id:'7-2',title:'Semirectes i segments'},
+    {id:'7-3',title:'Angles'},{id:'7-4',title:"Posicions relatives d'angles"},
+    {id:'7-5',title:'Polígons'},{id:'7-6',title:'Angles en els polígons'},
+  ]},
+  {id:8,title:'Triangles',color:'u8',icon:'△',units:[
+    {id:'8-1',title:'Triangles'},{id:'8-2',title:"Relacions entre els elements d'un triangle"},
+    {id:'8-3',title:'Rectes i punts notables en el triangle'},{id:'8-4',title:'Teorema de Pitàgores'},
+  ]},
+  {id:9,title:'Quadrilàters i circumferència',color:'u9',icon:'⬜',units:[
+    {id:'9-1',title:'Quadrilàters'},{id:'9-2',title:'Propietats dels paral·lelograms'},
+    {id:'9-3',title:'Polígons regulars'},{id:'9-4',title:'Circumferència'},
+    {id:'9-5',title:'Posicions relatives de la circumferència'},{id:'9-6',title:'Cercle'},
+  ]},
+  {id:10,title:'Perímetres i àrees',color:'u10',icon:'📐',units:[
+    {id:'10-1',title:"Perímetre d'un polígon"},{id:'10-2',title:'Longitud de la circumferència'},
+    {id:'10-3',title:'Àrea dels paral·lelograms'},{id:'10-4',title:'Àrea del triangle'},
+    {id:'10-5',title:'Àrea del trapezi'},{id:'10-6',title:"Àrea d'un polígon regular"},
+    {id:'10-7',title:'Àrea del cercle'},
+  ]},
+  {id:11,title:'Funcions',color:'u11',icon:'f(x)',units:[
+    {id:'11-1',title:'Coordenades cartesianes'},{id:'11-2',title:'Concepte de funció'},
+    {id:'11-3',title:"Expressió d'una funció mitjançant una taula"},{id:'11-4',title:"Expressió d'una funció mitjançant una equació"},
+    {id:'11-5',title:"Expressió d'una funció mitjançant una gràfica"},{id:'11-6',title:'Interpretació de gràfiques'},
+    {id:'11-7',title:'Funcions de proporcionalitat directa'},
+  ]},
+  {id:12,title:'Estadística i probabilitat',color:'u12',icon:'📊',units:[
+    {id:'12-1',title:'Població i mostra'},{id:'12-2',title:'Variables estadístiques'},
+    {id:'12-3',title:'Freqüències. Taules de freqüències'},{id:'12-4',title:'Gràfics estadístics'},
+    {id:'12-5',title:'Mesures estadístiques'},{id:'12-6',title:'Experiments aleatoris'},
+    {id:'12-7',title:'Probabilitat'},
+  ]},
+];
+const TOTAL_UNITS=CURRICULUM.reduce((s,t)=>s+t.units.length,0);
+const COLORS={u1:'#4f6ef7',u2:'#db2777',u3:'#d97706',u4:'#16a34a',u5:'#7c3aed',u6:'#ea580c',u7:'#0284c7',u8:'#a21caf',u9:'#15803d',u10:'#be123c',u11:'#0369a1',u12:'#4d7c0f'};
+
+function getP(){try{return JSON.parse(localStorage.getItem('m1eso')||'{}');}catch(e){return {};}}
+function setDone(id,v){const p=getP();p[id]=v;localStorage.setItem('m1eso',JSON.stringify(p));}
+function isDone(id){return !!getP()[id];}
+function countDone(){return Object.values(getP()).filter(Boolean).length;}
+
+let currentUnit=null,openTopic=null;
+
+function buildSidebar(){
+  const nav=document.getElementById('sidebar-nav');
+  nav.innerHTML='';
+  const p=getP();
+  CURRICULUM.forEach(t=>{
+    const done=t.units.filter(u=>p[u.id]).length;
+    const div=document.createElement('div');
+    div.className='unit-item';
+    div.innerHTML=`<button class="unit-btn${openTopic===t.id?' active':''}${done===t.units.length?' done':''}" onclick="toggleTopic(${t.id})">
+      <span class="unit-num">${done===t.units.length?'✓':t.id}</span>
+      <span style="flex:1;">${t.title}</span>
+      <span class="unit-progress">${done}/${t.units.length}</span>
+    </button>
+    <div class="subnav${openTopic===t.id?' open':''}" id="sub-${t.id}">
+      ${t.units.map(u=>`<button class="sub-btn${currentUnit===u.id?' active':''}${p[u.id]?' done':''}" onclick="goUnit('${u.id}')">
+        <span class="sub-dot"></span>${u.title}</button>`).join('')}
+    </div>`;
+    nav.appendChild(div);
+  });
+  updateGP();
+}
+
+function toggleTopic(id){openTopic=openTopic===id?null:id;buildSidebar();}
+
+function updateGP(){
+  const done=countDone(),pct=Math.round(done/TOTAL_UNITS*100);
+  document.getElementById('global-bar').style.width=pct+'%';
+  document.getElementById('global-text').textContent=done+' / '+TOTAL_UNITS+' apartats completats';
+}
+
+function goHome(){
+  currentUnit=null;
+  document.getElementById('topbar-info').textContent='📐 Matemàtiques 1r ESO';
+  document.getElementById('done-btn').style.display='none';
+  buildSidebar();
+  renderHome();
+}
+
+function goUnit(id){
+  currentUnit=id;
+  const [tid]=id.split('-');
+  openTopic=parseInt(tid);
+  buildSidebar();
+  const topic=CURRICULUM.find(t=>t.id===parseInt(tid));
+  const unit=topic.units.find(u=>u.id===id);
+  document.getElementById('topbar-info').textContent='Unitat '+topic.id+'. '+topic.title+' › '+unit.title;
+  const db=document.getElementById('done-btn');
+  db.style.display='flex';
+  db.className='done-btn'+(isDone(id)?' marked':'');
+  db.textContent=isDone(id)?'✅ Fet!':'☑ Marcar com a fet';
+  renderLesson(id);
+}
+
+function toggleDone(){
+  if(!currentUnit)return;
+  setDone(currentUnit,!isDone(currentUnit));
+  const db=document.getElementById('done-btn');
+  db.className='done-btn'+(isDone(currentUnit)?' marked':'');
+  db.textContent=isDone(currentUnit)?'✅ Fet!':'☑ Marcar com a fet';
+  buildSidebar();
+}
+
+function renderHome(){
+  const done=countDone(),pct=Math.round(done/TOTAL_UNITS*100);
+  document.getElementById('content').innerHTML=`<div class="home">
+    <div class="home-hero"><h2>Matemàtiques 1r ESO 🎯</h2>
+      <p>Selecciona una unitat del menú o clica una targeta per començar. Cada apartat té explicació visual i exercicis interactius.</p>
+      <div class="home-stats">
+        <div class="stat"><div class="stat-num">${done}</div><div class="stat-label">Apartats fets</div></div>
+        <div class="stat"><div class="stat-num">${TOTAL_UNITS-done}</div><div class="stat-label">Pendents</div></div>
+        <div class="stat"><div class="stat-num">${pct}%</div><div class="stat-label">Completat</div></div>
+      </div>
+    </div>
+    <div class="units-grid">${CURRICULUM.map(t=>{
+      const p=getP(),d=t.units.filter(u=>p[u.id]).length,pt=Math.round(d/t.units.length*100),c=COLORS[t.color];
+      return `<div class="unit-card" onclick="openUnit(${t.id})">
+        <div class="unit-card-num ${t.color}">${t.icon}</div>
+        <div class="unit-card-body">
+          <div class="unit-card-title">Unitat ${t.id}. ${t.title}</div>
+          <div class="unit-card-sub">${t.units.length} apartats</div>
+          <div class="unit-card-progress" style="color:${c}">${d}/${t.units.length} completats</div>
+          <div class="mini-bar"><div class="mini-bar-fill" style="width:${pt}%;background:${c}"></div></div>
+        </div></div>`;}).join('')}
+    </div></div>`;
+}
+
+function openUnit(tid){openTopic=tid;buildSidebar();goUnit(CURRICULUM.find(t=>t.id===tid).units[0].id);}
+
+function renderLesson(id){
+  const fn=LESSONS[id];
+  const [tid]=id.split('-');
+  const topic=CURRICULUM.find(t=>t.id===parseInt(tid));
+  const unit=topic.units.find(u=>u.id===id);
+  document.getElementById('content').innerHTML=`<div class="lesson-container">
+    <div class="lesson-header">
+      <div class="lesson-tag">Unitat ${topic.id} · ${topic.title}</div>
+      <div class="lesson-title">${unit.title}</div>
+    </div>
+    ${fn?fn():comingSoon()}
+  </div>`;
+  const initFn=window['IL_'+id.replace(/-/g,'_')];
+  if(initFn)initFn();
+}
+
+function comingSoon(){return `<div class="coming-soon"><div class="icon">🚧</div><h3>Properament disponible</h3><p>Aquesta lliçó s'afegirà aviat.<br>De moment pots marcar-la com a feta quan la treballis al llibre.</p></div>`;}
+
+function showTab(name,group){
+  document.querySelectorAll('.tab[data-group="'+group+'"]').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('.panel[data-group="'+group+'"]').forEach(p=>p.classList.toggle('active',p.dataset.panel===name));
+}
+
+// Helpers
+function shuffle(a){return[...a].sort(()=>Math.random()-.5);}
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;}
+function lcm(a,b){return Math.abs(a)/gcd(a,b)*Math.abs(b);}
+function isPrime(n){if(n<2)return false;for(let i=2;i<=Math.sqrt(n);i++)if(n%i===0)return false;return true;}
+function getDivisors(n){const d=[];n=Math.abs(n);for(let i=1;i<=n;i++)if(n%i===0)d.push(i);return d;}
+function primeFactors(n){const f={};let d=2;while(n>1){while(n%d===0){f[d]=(f[d]||0)+1;n/=d;}d++;}return f;}
+function formatF(f){return Object.entries(f).map(([p,e])=>e>1?`${p}<sup>${e}</sup>`:p).join(' × ');}
+function factorStr(n){const f=primeFactors(n);return Object.entries(f).map(([p,e])=>e>1?`${p}^${e}`:p).join(' x ');}
+function normF(s){return s.replace(/\s/g,'').toLowerCase().replace(/[×·]/g,'*').replace(/x/g,'*').split('*').sort().join('*');}
+
+function buildExYN(cid,pid,items){
+  const st=items.map(e=>({...e,answered:false}));
+  document.getElementById(cid).innerHTML=st.map((ex,i)=>`<div class="ex">
+    <span class="ex-q">${ex.q}</span>
+    <div style="display:flex;gap:8px;">
+      <button class="yn-btn" id="${cid}y${i}" onclick="ansYN('${cid}','${pid}',${i},true,${ex.ans})">Sí</button>
+      <button class="yn-btn" id="${cid}n${i}" onclick="ansYN('${cid}','${pid}',${i},false,${ex.ans})">No</button>
+    </div>
+    <span id="${cid}fb${i}"></span>
+    ${ex.hint?`<span class="hint-link" onclick="showHint('${cid}',${i},'${ex.hint}')">Pista</span>`:''}
+  </div>`).join('');
+  document.getElementById(cid)._st=st;updProg(cid,pid);
+}
+function ansYN(cid,pid,i,ch,ans){
+  const st=document.getElementById(cid)._st;if(st[i].answered)return;
+  const ok=ch===ans;
+  const yb=document.getElementById(cid+'y'+i),nb=document.getElementById(cid+'n'+i);
+  const fb=document.getElementById(cid+'fb'+i);
+  if(ok){(ch?yb:nb).classList.add('yn-ok');fb.className='fb-ok';fb.textContent='✓ Correcte!';st[i].answered=true;}
+  else{(ch?yb:nb).classList.add('yn-wrong');fb.className='fb-wrong';fb.textContent='✗ Torna-ho a provar';setTimeout(()=>{yb.className='yn-btn';nb.className='yn-btn';fb.textContent='';},700);}
+  updProg(cid,pid);
+}
+function showHint(cid,i,hint){const fb=document.getElementById(cid+'fb'+i);fb.style.color='var(--purple)';fb.className='';fb.textContent='Pista: '+hint;}
+
+function buildExNum(cid,pid,items){
+  const st=items.map(e=>({...e,answered:false}));
+  document.getElementById(cid).innerHTML=st.map((ex,i)=>`<div class="ex">
+    <span class="ex-q">${ex.q} =</span>
+    <input class="ex-inp" type="number" id="${cid}i${i}" placeholder="?" onkeydown="if(event.key==='Enter')chkNum('${cid}','${pid}',${i},${ex.ans})">
+    <button class="check-btn" onclick="chkNum('${cid}','${pid}',${i},${ex.ans})">Comprova</button>
+    <span id="${cid}fb${i}"></span>
+    ${ex.hint?`<span class="hint-link" onclick="showHint('${cid}',${i},'${ex.hint}')">Pista</span>`:''}
+  </div>`).join('');
+  document.getElementById(cid)._st=st;updProg(cid,pid);
+}
+function chkNum(cid,pid,i,ans){
+  const inp=document.getElementById(cid+'i'+i),fb=document.getElementById(cid+'fb'+i);
+  if(parseInt(inp.value)===ans){fb.className='fb-ok';fb.textContent='✓ Correcte!';inp.disabled=true;document.getElementById(cid)._st[i].answered=true;}
+  else{fb.className='fb-wrong';fb.textContent='✗ Torna-ho a provar';inp.value='';inp.focus();}
+  updProg(cid,pid);
+}
+function updProg(cid,pid){
+  const st=document.getElementById(cid)?._st||[];
+  if(document.getElementById(pid))document.getElementById(pid).textContent=st.filter(e=>e.answered).length+' de '+st.length+' correctes';
+}
+
+// ── LESSONS ──────────────────────────────────────────────────────
+const LESSONS={};
+
+// 1-1
+LESSONS['1-1']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="1-1" data-tab="e" onclick="showTab('e','1-1')">Explicació</button>
+  <button class="tab" data-group="1-1" data-tab="p" onclick="showTab('p','1-1')">Propietats</button>
+  <button class="tab" data-group="1-1" data-tab="n1" onclick="showTab('n1','1-1')">Nivell 1</button>
+  <button class="tab" data-group="1-1" data-tab="n2" onclick="showTab('n2','1-1')">Nivell 2</button>
+  <button class="tab" data-group="1-1" data-tab="n3" onclick="showTab('n3','1-1')">Nivell 3</button>
+</div>
+<div class="panel active" data-group="1-1" data-panel="e">
+  <div class="card"><div class="card-title">Què és una potència?</div>
+    <div style="display:flex;gap:12px;margin:10px 0;flex-wrap:wrap;">
+      <div style="flex:1;text-align:center;padding:14px;background:var(--surface2);border-radius:10px;"><div style="font-size:12px;color:var(--text2);">BASE</div><div style="font-size:2.5rem;font-weight:900;font-family:Nunito,sans-serif;color:#4f6ef7;">2</div><div style="font-size:12px;color:var(--text2);">El número que multipliquem</div></div>
+      <div style="flex:1;text-align:center;padding:14px;background:var(--surface2);border-radius:10px;"><div style="font-size:12px;color:var(--text2);">EXPONENT</div><div style="font-size:2.5rem;font-weight:900;font-family:Nunito,sans-serif;color:#ef4444;">4</div><div style="font-size:12px;color:var(--text2);">Quantes vegades</div></div>
+      <div style="flex:1;text-align:center;padding:14px;background:var(--surface2);border-radius:10px;"><div style="font-size:12px;color:var(--text2);">RESULTAT</div><div style="font-size:2.5rem;font-weight:900;font-family:Nunito,sans-serif;color:#16a34a;">16</div><div style="font-size:12px;color:var(--text2);">2×2×2×2=16</div></div>
+    </div>
+    <div class="tip">⚠️ 2⁴ ≠ 8. NO és multiplicar base per exponent. És multiplicar la base per ella mateixa 4 vegades.</div>
+  </div>
+  <div class="card"><div class="card-title">Casos especials</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="padding:12px;background:var(--surface2);border-radius:10px;text-align:center;"><div style="font-size:1.2rem;font-weight:700;">n⁰ = 1</div><div style="font-size:12px;color:var(--text2);">Qualsevol núm. elevat a 0</div></div>
+      <div style="padding:12px;background:var(--surface2);border-radius:10px;text-align:center;"><div style="font-size:1.2rem;font-weight:700;">n¹ = n</div><div style="font-size:12px;color:var(--text2);">Exponent 1 no canvia res</div></div>
+      <div style="padding:12px;background:var(--surface2);border-radius:10px;text-align:center;"><div style="font-size:1.2rem;font-weight:700;">n² = n×n</div><div style="font-size:12px;color:var(--text2);">Quadrat</div></div>
+      <div style="padding:12px;background:var(--surface2);border-radius:10px;text-align:center;"><div style="font-size:1.2rem;font-weight:700;">n³ = n×n×n</div><div style="font-size:12px;color:var(--text2);">Cub</div></div>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="1-1" data-panel="p">
+  <div class="card"><div class="card-title">1. Producte — mateixa base</div><div class="formula-box">a<sup>m</sup> × a<sup>n</sup> = a<sup>m+n</sup></div><div style="text-align:center;font-size:14px;color:var(--text2);">2³ × 2⁴ = 2⁷ = 128</div><div class="tip">La base no canvia. Els exponents se sumen.</div></div>
+  <div class="card"><div class="card-title">2. Quocient — mateixa base</div><div class="formula-box">a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m−n</sup></div><div style="text-align:center;font-size:14px;color:var(--text2);">3⁵ ÷ 3² = 3³ = 27</div><div class="tip">Els exponents es resten.</div></div>
+  <div class="card"><div class="card-title">3. Potència d'una potència</div><div class="formula-box">(a<sup>m</sup>)<sup>n</sup> = a<sup>m×n</sup></div><div style="text-align:center;font-size:14px;color:var(--text2);">(2³)⁴ = 2¹² = 4096</div><div class="tip">Els exponents es multipliquen.</div></div>
+  <div class="card"><div class="card-title">4. Potència d'un producte</div><div class="formula-box">(a·b)<sup>n</sup> = a<sup>n</sup>·b<sup>n</sup></div><div style="text-align:center;font-size:14px;color:var(--text2);">(2·3)³ = 2³·3³ = 216</div><div class="tip">L'exponent es distribueix per tots els factors.</div></div>
+</div>
+<div class="panel" data-group="1-1" data-panel="n1">
+  <div class="level-tag lv1">Nivell 1 — Troba l'exponent</div>
+  <div id="p11n1"></div><div class="progress-line" id="p11n1pg"></div>
+  <button class="new-btn" onclick="g11n1()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="1-1" data-panel="n2">
+  <div class="level-tag lv2">Nivell 2 — Calcula el resultat</div>
+  <div id="p11n2"></div><div class="progress-line" id="p11n2pg"></div>
+  <button class="new-btn" onclick="g11n2()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="1-1" data-panel="n3">
+  <div class="level-tag lv3">Nivell 3 — Expressions combinades</div>
+  <div id="p11n3"></div><div class="progress-line" id="p11n3pg"></div>
+  <button class="new-btn" onclick="g11n3()">Exercicis nous ↺</button>
+</div>`;
+window.IL_1_1=function(){g11n1();g11n2();g11n3();};
+window.g11n1=function(){buildExNum('p11n1','p11n1pg',shuffle([{q:'2³×2⁴=2<sup>?</sup>',ans:7},{q:'5²×5³=5<sup>?</sup>',ans:5},{q:'3⁶÷3²=3<sup>?</sup>',ans:4},{q:'7⁵÷7³=7<sup>?</sup>',ans:2},{q:'(2³)²=2<sup>?</sup>',ans:6},{q:'(5²)³=5<sup>?</sup>',ans:6},{q:'4²×4⁵=4<sup>?</sup>',ans:7},{q:'10⁴÷10¹=10<sup>?</sup>',ans:3}]).slice(0,6));};
+window.g11n2=function(){buildExNum('p11n2','p11n2pg',shuffle([{q:'2³×2²',ans:32},{q:'3⁴÷3²',ans:9},{q:'(2²)³',ans:64},{q:'2⁴×2¹',ans:32},{q:'5³÷5¹',ans:25},{q:'(3²)²',ans:81},{q:'10²×10¹',ans:1000},{q:'4⁴÷4²',ans:16}]).slice(0,6));};
+window.g11n3=function(){buildExNum('p11n3','p11n3pg',shuffle([{q:'2³×2²÷2¹',ans:16,hint:'2⁴=16'},{q:'(2²)³÷2⁴',ans:4,hint:'2⁶÷2⁴=2²=4'},{q:'3²×(3¹)³',ans:243,hint:'3⁵=243'},{q:'2¹×2²×2³',ans:64,hint:'2⁶=64'},{q:'(3²)²÷3³',ans:3,hint:'3⁴÷3³=3'}]).slice(0,5));};
+
+// 1-2
+LESSONS['1-2']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="1-2" data-tab="r" onclick="showTab('r','1-2')">Les regles</button>
+  <button class="tab" data-group="1-2" data-tab="x" onclick="showTab('x','1-2')">Practica</button>
+</div>
+<div class="panel active" data-group="1-2" data-panel="r">
+  ${[['2','Acaba en xifra parella (0,2,4,6,8)','346→acaba en 6 ✓ | 531→acaba en 1 ✗'],['3','Suma de xifres divisible per 3','372→3+7+2=12→12÷3=4 ✓'],['4','Dues últimes xifres div. per 4','532→32÷4=8 ✓ | 718→18÷4 no és enter ✗'],['5','Acaba en 0 o 5','840 ✓ | 673 ✗'],['9','Suma de xifres divisible per 9','486→4+8+6=18 ✓'],['10','Acaba en 0','350 ✓ | 125 ✗']].map(([n,r,ex])=>`<div class="card" style="display:flex;gap:14px;">
+    <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:Nunito,sans-serif;font-weight:900;font-size:16px;flex-shrink:0;">${n}</div>
+    <div><div class="card-title" style="margin-bottom:4px;">${r}</div><div style="font-size:13px;color:var(--text2);">${ex}</div></div>
+  </div>`).join('')}
+  <div class="tip">Si un número és divisible per 2 i per 3 → automàticament és divisible per 6.</div>
+</div>
+<div class="panel" data-group="1-2" data-panel="x">
+  <div id="p12ex"></div><div class="progress-line" id="p12pg"></div>
+  <button class="new-btn" onclick="g12()">Exercicis nous ↺</button>
+</div>`;
+window.IL_1_2=function(){g12();};
+window.g12=function(){
+  const divs=[2,3,4,5,9,10];
+  const nums=[];while(nums.length<8){const n=Math.floor(Math.random()*900)+100;if(!nums.includes(n))nums.push(n);}
+  buildExYN('p12ex','p12pg',nums.map(n=>{const d=divs[Math.floor(Math.random()*divs.length)];const sum=String(n).split('').reduce((a,c)=>a+parseInt(c),0);return{q:`És <b>${n}</b> divisible per <b>${d}</b>?`,ans:n%d===0,hint:d===2||d===4||d===5||d===10?`Última xifra: ${n%10}`:`Suma xifres: ${sum}`};}));
+};
+
+// 1-3
+LESSONS['1-3']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="1-3" data-tab="e" onclick="showTab('e','1-3')">Explicació</button>
+  <button class="tab" data-group="1-3" data-tab="x" onclick="showTab('x','1-3')">Exercicis</button>
+</div>
+<div class="panel active" data-group="1-3" data-panel="e">
+  <div class="card"><div class="card-title">Múltiples</div>
+    <div class="formula-box">múltiples de n = n×1, n×2, n×3…</div>
+    <p style="font-size:14px;color:var(--text2);margin:8px 0;">Múltiples de 4: <b>4, 8, 12, 16, 20…</b></p>
+    <div class="tip">Els múltiples d'un número són infinits.<br>Si 12 és múltiple de 3 → 3 és divisor de 12.</div>
+  </div>
+  <div class="card"><div class="card-title">Explora</div>
+    <div class="slider-row"><span style="min-width:60px;font-size:14px;color:var(--text2);">Número</span>
+      <input type="range" min="2" max="15" value="3" class="slider" id="sl13" oninput="um13()">
+      <span class="slider-val" id="sv13">3</span></div>
+    <div id="ms13" class="num-line"></div>
+  </div>
+</div>
+<div class="panel" data-group="1-3" data-panel="x">
+  <div id="p13ex"></div><div class="progress-line" id="p13pg"></div>
+  <button class="new-btn" onclick="g13()">Exercicis nous ↺</button>
+</div>`;
+window.IL_1_3=function(){um13();g13();};
+window.um13=function(){const n=parseInt(document.getElementById('sl13').value);document.getElementById('sv13').textContent=n;document.getElementById('ms13').innerHTML=[...Array(12)].map((_,i)=>`<div class="nl-box nl-pos">${n*(i+1)}</div>`).join('');};
+window.g13=function(){const bases=[2,3,4,5,6,7,8,9];const items=[];for(let i=0;i<8;i++){const b=bases[Math.floor(Math.random()*bases.length)];const m=b*(Math.floor(Math.random()*9)+2)+(Math.random()<.4?1:0);items.push({q:`És <b>${m}</b> múltiple de <b>${b}</b>?`,ans:m%b===0});}buildExYN('p13ex','p13pg',items.slice(0,7));};
+
+// 1-4
+LESSONS['1-4']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="1-4" data-tab="e" onclick="showTab('e','1-4')">Mètode</button>
+  <button class="tab" data-group="1-4" data-tab="x" onclick="showTab('x','1-4')">Exercicis</button>
+</div>
+<div class="panel active" data-group="1-4" data-panel="e">
+  <div class="card"><div class="card-title">Trobar tots els divisors: parelles</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:10px;">Busca parelles que multiplicades donin el número. Exemple: divisors de <b>24</b></p>
+    ${[[1,24],[2,12],[3,8],[4,6]].map(([a,b])=>`<div style="display:flex;align-items:center;gap:10px;margin:5px 0;font-size:15px;"><span style="background:#eef1ff;color:#4f6ef7;padding:4px 12px;border-radius:8px;font-weight:700;">${a}</span><span style="color:var(--text2);">×</span><span style="background:#eef1ff;color:#4f6ef7;padding:4px 12px;border-radius:8px;font-weight:700;">${b}</span><span style="color:var(--text2);font-size:13px;">= 24</span></div>`).join('')}
+    <div style="margin-top:10px;">Divisors de 24: <b>1, 2, 3, 4, 6, 8, 12, 24</b></div>
+  </div>
+  <div class="card"><div class="card-title">Explora</div>
+    <div class="slider-row"><span style="min-width:60px;font-size:14px;color:var(--text2);">Número</span><input type="range" min="2" max="100" value="24" class="slider" id="sl14" oninput="ud14()"><span class="slider-val" id="sv14">24</span></div>
+    <div id="ds14" class="num-line"></div><div id="dc14" style="font-size:13px;color:var(--text2);margin-top:6px;"></div>
+  </div>
+</div>
+<div class="panel" data-group="1-4" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Escriu tots els divisors separats per comes.</p>
+  <div id="p14ex"></div><div class="progress-line" id="p14pg"></div>
+  <button class="new-btn" onclick="g14()">Exercicis nous ↺</button>
+</div>`;
+window.IL_1_4=function(){ud14();g14();};
+window.ud14=function(){const n=parseInt(document.getElementById('sl14').value);document.getElementById('sv14').textContent=n;const d=getDivisors(n);document.getElementById('ds14').innerHTML=d.map(v=>`<div class="nl-box nl-pos">${v}</div>`).join('');document.getElementById('dc14').textContent=n+' té '+d.length+' divisors.';};
+window.g14=function(){
+  const nums=shuffle([12,18,20,24,30,36,40,48,50,60,15,16,28,32]).slice(0,5);
+  const st=nums.map(n=>({n,ans:getDivisors(n),answered:false}));
+  document.getElementById('p14ex').innerHTML=st.map((ex,i)=>`<div class="ex" style="flex-direction:column;align-items:flex-start;gap:8px;"><span>Divisors de <b>${ex.n}</b>:</span><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><input style="width:200px;font-size:14px;padding:6px;border:1.5px solid var(--border);border-radius:8px;" type="text" id="p14i${i}" placeholder="1, 2, ..." onkeydown="if(event.key==='Enter')ck14(${i})"><button class="check-btn" onclick="ck14(${i})">Comprova</button><span id="p14fb${i}"></span><span class="hint-link" onclick="document.getElementById('p14fb${i}').textContent='${getDivisors(nums[i]).join(', ')}';document.getElementById('p14fb${i}').style.color='var(--purple)';">Solució</span></div></div>`).join('');
+  document.getElementById('p14ex')._st=st;document.getElementById('p14pg').textContent='0 de '+st.length+' correctes';
+};
+window.ck14=function(i){const st=document.getElementById('p14ex')._st;const inp=document.getElementById('p14i'+i);const fb=document.getElementById('p14fb'+i);const vals=inp.value.replace(/\s/g,'').split(',').map(Number).filter(n=>!isNaN(n)&&n>0).sort((a,b)=>a-b);const ans=[...st[i].ans].sort((a,b)=>a-b);if(JSON.stringify(vals)===JSON.stringify(ans)){fb.className='fb-ok';fb.textContent='✓ Perfecte!';inp.disabled=true;st[i].answered=true;}else{fb.className='fb-wrong';fb.textContent='✗ Comprova que no en falta cap';inp.focus();}document.getElementById('p14pg').textContent=st.filter(e=>e.answered).length+' de '+st.length+' correctes';};
+
+// 1-5
+LESSONS['1-5']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="1-5" data-tab="e" onclick="showTab('e','1-5')">Explicació</button>
+  <button class="tab" data-group="1-5" data-tab="x" onclick="showTab('x','1-5')">Exercicis</button>
+</div>
+<div class="panel active" data-group="1-5" data-panel="e">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+    <div class="card" style="border-top:3px solid #4f6ef7;"><div class="card-title" style="color:#4f6ef7;">PRIMER</div><div style="font-size:15px;font-weight:700;">Exactament 2 divisors</div><div style="font-size:13px;color:var(--text2);margin-top:6px;">L'1 i ell mateix. Ex: 7→divisors: <b>1 i 7</b></div></div>
+    <div class="card" style="border-top:3px solid #16a34a;"><div class="card-title" style="color:#16a34a;">COMPOST</div><div style="font-size:15px;font-weight:700;">Més de 2 divisors</div><div style="font-size:13px;color:var(--text2);margin-top:6px;">Ex: 12→1,2,3,4,6,12</div></div>
+  </div>
+  <div class="card" style="border-top:3px solid #d97706;"><div class="card-title" style="color:#d97706;">L'1 — cas especial</div><div style="font-size:14px;">L'1 NO és primer ni compost. Té un sol divisor.</div></div>
+  <div class="card"><div class="card-title">Primers fins a 50</div><div class="num-line">${[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47].map(p=>`<div class="nl-box nl-pos">${p}</div>`).join('')}</div></div>
+</div>
+<div class="panel" data-group="1-5" data-panel="x">
+  <div id="p15ex"></div><div class="progress-line" id="p15pg"></div>
+  <button class="new-btn" onclick="g15()">Exercicis nous ↺</button>
+</div>`;
+window.IL_1_5=function(){g15();};
+window.g15=function(){
+  const nums=shuffle([2,3,4,7,9,11,13,15,17,19,21,23,25,29,31,37,41,43,47,51,57,59]).slice(0,8);
+  const st=nums.map(n=>({n,ans:isPrime(n),answered:false}));
+  document.getElementById('p15ex').innerHTML=st.map((ex,i)=>`<div class="ex"><span class="ex-q">El <b>${ex.n}</b> és...</span><div style="display:flex;gap:8px;"><button class="yn-btn" id="p15p${i}" onclick="a15(${i},true)">Primer</button><button class="yn-btn" id="p15c${i}" onclick="a15(${i},false)">Compost</button></div><span id="p15fb${i}"></span></div>`).join('');
+  document.getElementById('p15ex')._st=st;document.getElementById('p15pg').textContent='0 de '+st.length+' correctes';
+};
+window.a15=function(i,ch){const st=document.getElementById('p15ex')._st;if(st[i].answered)return;const ok=ch===st[i].ans;const bp=document.getElementById('p15p'+i),bc=document.getElementById('p15c'+i),fb=document.getElementById('p15fb'+i);if(ok){(ch?bp:bc).classList.add('yn-ok');fb.className='fb-ok';fb.textContent='✓ Correcte!';st[i].answered=true;}else{(ch?bp:bc).classList.add('yn-wrong');fb.className='fb-wrong';fb.textContent='✗ Torna-ho a provar';setTimeout(()=>{bp.className='yn-btn';bc.className='yn-btn';fb.textContent='';},700);}document.getElementById('p15pg').textContent=st.filter(e=>e.answered).length+' de '+st.length+' correctes';};
+
+// 1-6
+LESSONS['1-6']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="1-6" data-tab="e" onclick="showTab('e','1-6')">Mètode</button>
+  <button class="tab" data-group="1-6" data-tab="c" onclick="showTab('c','1-6')">Calculadora</button>
+  <button class="tab" data-group="1-6" data-tab="x" onclick="showTab('x','1-6')">Exercicis</button>
+</div>
+<div class="panel active" data-group="1-6" data-panel="e">
+  <div class="card"><div class="card-title">Descomposició de 60</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:10px;">Dividim pels primers (2,3,5…) fins arribar a 1.</p>
+    <table style="border-collapse:collapse;margin:0 auto;">${[[60,2],[30,2],[15,3],[5,5],[1,'']].map(([n,d])=>`<tr><td style="padding:3px 12px;">${n}</td><td style="padding:3px 12px;${d?'color:#4f6ef7;font-weight:700;border-left:2px solid #4f6ef7;':''}">${d}</td></tr>`).join('')}</table>
+    <div class="formula-box" style="margin-top:12px;">60 = 2² × 3 × 5</div>
+    <div class="tip">Para quan arribes a 1. Repetits → potència.</div>
+  </div>
+</div>
+<div class="panel" data-group="1-6" data-panel="c">
+  <div class="card"><div class="card-title">Prova-ho tu</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;"><input type="number" min="2" max="1000" value="60" id="c16i" style="width:120px;font-size:1.1rem;padding:8px;border:1.5px solid var(--border);border-radius:8px;"><button class="check-btn" onclick="rc16()">Descompon</button></div>
+    <div id="c16o"></div>
+  </div>
+</div>
+<div class="panel" data-group="1-6" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Escriu la descomposició (usa ^ per potències: 2^2 x 3)</p>
+  <div id="p16ex"></div><div class="progress-line" id="p16pg"></div>
+  <button class="new-btn" onclick="g16()">Exercicis nous ↺</button>
+</div>`;
+window.IL_1_6=function(){rc16();g16();};
+window.rc16=function(){const n=parseInt(document.getElementById('c16i').value);if(isNaN(n)||n<2)return;let cur=n;const steps=[];let d=2;while(cur>1){while(cur%d===0){steps.push([cur,d]);cur/=d;}d++;}steps.push([1,'']);document.getElementById('c16o').innerHTML=`<table style="border-collapse:collapse;margin:0 auto;">${steps.map(([a,b])=>`<tr><td style="padding:3px 12px;">${a}</td><td style="padding:3px 12px;${b?'color:#4f6ef7;font-weight:700;border-left:2px solid #4f6ef7;':''}">${b}</td></tr>`).join('')}</table><div class="formula-box" style="margin-top:12px;">${n} = ${formatF(primeFactors(n))}</div>`;};
+window.g16=function(){const nums=shuffle([12,18,20,24,30,36,45,48,50,60,42,28,40,54]).slice(0,5);const st=nums.map(n=>({n,ans:factorStr(n),answered:false}));document.getElementById('p16ex').innerHTML=st.map((ex,i)=>`<div class="ex" style="flex-direction:column;align-items:flex-start;gap:8px;"><span>Descompon <b>${ex.n}</b>:</span><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><input style="width:180px;font-size:14px;padding:6px;border:1.5px solid var(--border);border-radius:8px;" type="text" id="p16i${i}" placeholder="ex: 2^2 x 3"><button class="check-btn" onclick="ck16(${i})">Comprova</button><span id="p16fb${i}"></span><span class="hint-link" onclick="document.getElementById('p16fb${i}').textContent='${factorStr(nums[i])}';document.getElementById('p16fb${i}').style.color='var(--purple)';">Solució</span></div></div>`).join('');document.getElementById('p16ex')._st=st;document.getElementById('p16pg').textContent='0 de '+st.length+' correctes';};
+window.ck16=function(i){const st=document.getElementById('p16ex')._st;const inp=document.getElementById('p16i'+i);const fb=document.getElementById('p16fb'+i);if(normF(inp.value)===normF(st[i].ans)){fb.className='fb-ok';fb.textContent='✓ Correcte!';inp.disabled=true;st[i].answered=true;}else{fb.className='fb-wrong';fb.textContent='✗ Torna-ho a provar';inp.focus();}document.getElementById('p16pg').textContent=st.filter(e=>e.answered).length+' de '+st.length+' correctes';};
+
+// 1-7
+LESSONS['1-7']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="1-7" data-tab="e" onclick="showTab('e','1-7')">Mètode</button>
+  <button class="tab" data-group="1-7" data-tab="c" onclick="showTab('c','1-7')">Calculadora</button>
+  <button class="tab" data-group="1-7" data-tab="x" onclick="showTab('x','1-7')">Exercicis</button>
+</div>
+<div class="panel active" data-group="1-7" data-panel="e">
+  <div class="card"><div class="card-title">Màxim Comú Divisor</div><p style="font-size:14px;color:var(--text2);margin-bottom:10px;">El número més gran que divideix exactament tots els números.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;"><div style="padding:12px;background:var(--surface2);border-radius:10px;">12 = 2² × 3</div><div style="padding:12px;background:var(--surface2);border-radius:10px;">18 = 2 × 3²</div></div>
+    <div style="font-size:14px;color:var(--text2);">Comuns: <b>2</b> (exp.min:1) i <b>3</b> (exp.min:1)</div>
+    <div class="formula-box" style="margin-top:10px;">MCD(12,18) = 2¹×3¹ = 6</div>
+    <div class="tip">Regla: factors <b>comuns</b>, exponent <b>MÍNIM</b>.</div>
+  </div>
+</div>
+<div class="panel" data-group="1-7" data-panel="c">
+  <div class="card"><div class="card-title">Calcula el MCD</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;"><input type="number" min="2" max="500" value="12" id="c17a" style="width:100px;font-size:1.1rem;padding:8px;border:1.5px solid var(--border);border-radius:8px;"><span style="color:var(--text2);">i</span><input type="number" min="2" max="500" value="18" id="c17b" style="width:100px;font-size:1.1rem;padding:8px;border:1.5px solid var(--border);border-radius:8px;"><button class="check-btn" onclick="cm17()">Calcula</button></div>
+    <div id="c17o"></div>
+  </div>
+</div>
+<div class="panel" data-group="1-7" data-panel="x">
+  <div id="p17ex"></div><div class="progress-line" id="p17pg"></div>
+  <button class="new-btn" onclick="g17()">Exercicis nous ↺</button>
+</div>`;
+window.IL_1_7=function(){cm17();g17();};
+window.cm17=function(){const a=parseInt(document.getElementById('c17a').value),b=parseInt(document.getElementById('c17b').value);if(isNaN(a)||isNaN(b))return;document.getElementById('c17o').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;"><div style="padding:10px;background:var(--surface2);border-radius:10px;">${a} = ${formatF(primeFactors(a))}</div><div style="padding:10px;background:var(--surface2);border-radius:10px;">${b} = ${formatF(primeFactors(b))}</div></div><div class="formula-box">MCD(${a},${b}) = ${gcd(a,b)}</div>`;};
+window.g17=function(){buildExNum('p17ex','p17pg',shuffle([[12,18],[12,20],[15,25],[24,36],[30,45],[18,27],[16,24],[20,30],[42,56],[60,90]]).slice(0,5).map(([a,b])=>({q:`MCD(${a},${b})`,ans:gcd(a,b)})));};
+
+// 1-8
+LESSONS['1-8']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="1-8" data-tab="e" onclick="showTab('e','1-8')">Mètode</button>
+  <button class="tab" data-group="1-8" data-tab="d" onclick="showTab('d','1-8')">MCD vs mcm</button>
+  <button class="tab" data-group="1-8" data-tab="c" onclick="showTab('c','1-8')">Calculadora</button>
+  <button class="tab" data-group="1-8" data-tab="x" onclick="showTab('x','1-8')">Exercicis</button>
+</div>
+<div class="panel active" data-group="1-8" data-panel="e">
+  <div class="card"><div class="card-title">Mínim Comú Múltiple</div><p style="font-size:14px;color:var(--text2);margin-bottom:10px;">El número més petit que és múltiple de tots.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;"><div style="padding:12px;background:var(--surface2);border-radius:10px;">12 = 2² × 3</div><div style="padding:12px;background:var(--surface2);border-radius:10px;">18 = 2 × 3²</div></div>
+    <div style="font-size:14px;color:var(--text2);">Tots: <b>2</b> (exp.max:2) i <b>3</b> (exp.max:2)</div>
+    <div class="formula-box" style="margin-top:10px;">mcm(12,18) = 2²×3² = 36</div>
+    <div class="tip">Regla: <b>TOTS</b> els factors, exponent <b>MÀXIM</b>.</div>
+  </div>
+</div>
+<div class="panel" data-group="1-8" data-panel="d">
+  <div class="card"><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div style="padding:14px;background:#eef1ff;border-radius:12px;text-align:center;"><div style="font-family:Nunito,sans-serif;font-weight:900;font-size:16px;color:#4f6ef7;margin-bottom:8px;">MCD</div><div style="font-size:14px;">Factors <b>COMUNS</b><br>Exponent <b>MÍNIM</b></div></div>
+    <div style="padding:14px;background:#dcfce7;border-radius:12px;text-align:center;"><div style="font-family:Nunito,sans-serif;font-weight:900;font-size:16px;color:#16a34a;margin-bottom:8px;">mcm</div><div style="font-size:14px;">Factors <b>TOTS</b><br>Exponent <b>MÀXIM</b></div></div>
+  </div><div class="tip" style="margin-top:12px;">✔ MCD × mcm = producte dels dos números. Ex: 6 × 36 = 216 = 12 × 18</div></div>
+</div>
+<div class="panel" data-group="1-8" data-panel="c">
+  <div class="card"><div class="card-title">Calcula el mcm</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;"><input type="number" min="2" max="500" value="12" id="c18a" style="width:100px;font-size:1.1rem;padding:8px;border:1.5px solid var(--border);border-radius:8px;"><span style="color:var(--text2);">i</span><input type="number" min="2" max="500" value="18" id="c18b" style="width:100px;font-size:1.1rem;padding:8px;border:1.5px solid var(--border);border-radius:8px;"><button class="check-btn" onclick="cm18()">Calcula</button></div>
+    <div id="c18o"></div>
+  </div>
+</div>
+<div class="panel" data-group="1-8" data-panel="x">
+  <div id="p18ex"></div><div class="progress-line" id="p18pg"></div>
+  <button class="new-btn" onclick="g18()">Exercicis nous ↺</button>
+</div>`;
+window.IL_1_8=function(){cm18();g18();};
+window.cm18=function(){const a=parseInt(document.getElementById('c18a').value),b=parseInt(document.getElementById('c18b').value);if(isNaN(a)||isNaN(b))return;const fa=primeFactors(a),fb=primeFactors(b);const all={};[...Object.keys(fa),...Object.keys(fb)].forEach(p=>{all[p]=Math.max(fa[p]||0,fb[p]||0);});document.getElementById('c18o').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;"><div style="padding:10px;background:var(--surface2);border-radius:10px;">${a} = ${formatF(fa)}</div><div style="padding:10px;background:var(--surface2);border-radius:10px;">${b} = ${formatF(fb)}</div></div><div class="formula-box">mcm(${a},${b}) = ${lcm(a,b)}</div>`;};
+window.g18=function(){buildExNum('p18ex','p18pg',shuffle([[4,6],[6,8],[3,4],[4,10],[6,9],[8,12],[5,6],[4,14],[6,10],[9,12]]).slice(0,5).map(([a,b])=>({q:`mcm(${a},${b})`,ans:lcm(a,b)})));};
+
+// ── UNITAT 2 ────────────────────────────────────────────────────
+LESSONS['2-1']=()=>`
+<div class="tabs"><button class="tab active" data-group="2-1" data-tab="e" onclick="showTab('e','2-1')">Explicació</button><button class="tab" data-group="2-1" data-tab="x" onclick="showTab('x','2-1')">Exercicis</button></div>
+<div class="panel active" data-group="2-1" data-panel="e">
+  <div class="card"><div class="card-title">Nombres enters ℤ</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:12px;">Inclouen positius, zero i negatius.</p>
+    <div class="num-line" style="justify-content:center;">${[-5,-4,-3,-2,-1].map(n=>`<div class="nl-box nl-neg">${n}</div>`).join('')}<div class="nl-box nl-zero">0</div>${[1,2,3,4,5].map(n=>`<div class="nl-box nl-pos">+${n}</div>`).join('')}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px;">
+      <div style="padding:12px;background:#eef1ff;border-radius:10px;text-align:center;"><div style="font-weight:700;color:#4f6ef7;">Positius</div><div style="font-size:12px;color:var(--text2);margin-top:4px;">Temperatura sobre zero, pisos per dalt</div></div>
+      <div style="padding:12px;background:var(--surface2);border-radius:10px;text-align:center;"><div style="font-weight:700;">Zero</div><div style="font-size:12px;color:var(--text2);margin-top:4px;">Ni + ni −</div></div>
+      <div style="padding:12px;background:#fee2e2;border-radius:10px;text-align:center;"><div style="font-weight:700;color:#ef4444;">Negatius</div><div style="font-size:12px;color:var(--text2);margin-top:4px;">Temperatura sota zero, soterranis</div></div>
+    </div>
+    <div class="tip">Valor absolut: |−7|=7, |+5|=5, |0|=0. Sempre positiu.</div>
+  </div>
+</div>
+<div class="panel" data-group="2-1" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Quin enter representa cada situació?</p>
+  <div id="p21ex"></div><div class="progress-line" id="p21pg"></div>
+  <button class="new-btn" onclick="g21()">Exercicis nous ↺</button>
+</div>`;
+window.IL_2_1=function(){g21();};
+window.g21=function(){buildExNum('p21ex','p21pg',shuffle([{q:'3 plantes per sota de la planta baixa',ans:-3},{q:'5 graus sobre zero',ans:5},{q:'Un deute de 12 euros',ans:-12},{q:'Guanyar 8 punts',ans:8},{q:'2 metres per sota de l\'aigua',ans:-2},{q:'10 graus sota zero',ans:-10},{q:'Pujar 6 pisos',ans:6},{q:'Perdre 4 euros',ans:-4},{q:'La planta baixa',ans:0},{q:'Baixar 7 metres',ans:-7}]).slice(0,6));};
+
+LESSONS['2-2']=()=>`
+<div class="tabs"><button class="tab active" data-group="2-2" data-tab="e" onclick="showTab('e','2-2')">Explicació</button><button class="tab" data-group="2-2" data-tab="x" onclick="showTab('x','2-2')">Exercicis</button></div>
+<div class="panel active" data-group="2-2" data-panel="e">
+  <div class="card"><div class="card-title">Comparació d'enters</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:10px;">A la recta, el que està més a la dreta és el més gran.</p>
+    <div class="num-line" style="justify-content:center;">${[-5,-4,-3,-2,-1,0,1,2,3,4,5].map(n=>`<div class="nl-box ${n<0?'nl-neg':n===0?'nl-zero':'nl-pos'}">${n}</div>`).join('')}</div>
+    <div class="tip" style="margin-top:14px;">· Qualsevol positiu > 0 > qualsevol negatiu<br>· Entre negatius: el de valor absolut més petit és el major<br>· −2 > −5 perquè −2 és més a la dreta</div>
+  </div>
+</div>
+<div class="panel" data-group="2-2" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Quin és el major?</p>
+  <div id="p22ex"></div><div class="progress-line" id="p22pg"></div>
+  <button class="new-btn" onclick="g22()">Exercicis nous ↺</button>
+</div>`;
+window.IL_2_2=function(){g22();};
+window.g22=function(){
+  const st=[];for(let i=0;i<7;i++){const a=Math.floor(Math.random()*20)-10;let b;do{b=Math.floor(Math.random()*20)-10;}while(b===a);st.push({a,b,ans:Math.max(a,b),answered:false});}
+  document.getElementById('p22ex').innerHTML=st.map((ex,i)=>`<div class="ex"><span class="ex-q">Quin és major: <b>${ex.a}</b> o <b>${ex.b}</b>?</span><div style="display:flex;gap:8px;"><button class="yn-btn" id="p22a${i}" onclick="a22(${i},${ex.a})">${ex.a}</button><button class="yn-btn" id="p22b${i}" onclick="a22(${i},${ex.b})">${ex.b}</button></div><span id="p22fb${i}"></span></div>`).join('');
+  document.getElementById('p22ex')._st=st;document.getElementById('p22pg').textContent='0 de '+st.length+' correctes';
+};
+window.a22=function(i,ch){const st=document.getElementById('p22ex')._st;if(st[i].answered)return;const ok=ch===st[i].ans;const ba=document.getElementById('p22a'+i),bb=document.getElementById('p22b'+i),fb=document.getElementById('p22fb'+i);const cb=ch===st[i].a?ba:bb;if(ok){cb.classList.add('yn-ok');fb.className='fb-ok';fb.textContent='✓ Correcte!';st[i].answered=true;}else{cb.classList.add('yn-wrong');fb.className='fb-wrong';fb.textContent='✗ Torna-ho a provar';setTimeout(()=>{ba.className='yn-btn';bb.className='yn-btn';fb.textContent='';},700);}document.getElementById('p22pg').textContent=st.filter(e=>e.answered).length+' de '+st.length+' correctes';};
+
+LESSONS['2-3']=()=>`
+<div class="tabs"><button class="tab active" data-group="2-3" data-tab="e" onclick="showTab('e','2-3')">Regles</button><button class="tab" data-group="2-3" data-tab="x" onclick="showTab('x','2-3')">Exercicis</button></div>
+<div class="panel active" data-group="2-3" data-panel="e">
+  <div class="card"><div class="card-title">Suma i resta de dos enters</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+      <div style="padding:14px;background:#eef1ff;border-radius:12px;"><div style="font-weight:700;color:#4f6ef7;margin-bottom:8px;">Mateixos signes → suma</div><div style="font-size:14px;color:var(--text2);">+5+(+3)=<b>+8</b><br>−4+(−2)=<b>−6</b></div><div style="font-size:12px;color:var(--text2);margin-top:6px;">Sumes valors absoluts, poses el signe comú.</div></div>
+      <div style="padding:14px;background:#fee2e2;border-radius:12px;"><div style="font-weight:700;color:#ef4444;margin-bottom:8px;">Signes contraris → resta</div><div style="font-size:14px;color:var(--text2);">+7+(−3)=<b>+4</b><br>−8+(+5)=<b>−3</b></div><div style="font-size:12px;color:var(--text2);margin-top:6px;">Restes valors absoluts, poses signe del major.</div></div>
+    </div>
+    <div class="card" style="margin-top:12px;"><div class="card-title">Resta = sumar el contrari</div><div class="formula-box">a − b = a + (−b)</div><div style="font-size:14px;color:var(--text2);text-align:center;">5−(−3)=5+3=<b>8</b> | −4−(+2)=−4+(−2)=<b>−6</b></div></div>
+  </div>
+</div>
+<div class="panel" data-group="2-3" data-panel="x">
+  <div id="p23ex"></div><div class="progress-line" id="p23pg"></div>
+  <button class="new-btn" onclick="g23()">Exercicis nous ↺</button>
+</div>`;
+window.IL_2_3=function(){g23();};
+window.g23=function(){const items=[];for(let i=0;i<8;i++){const a=Math.floor(Math.random()*20)-10;const b=Math.floor(Math.random()*20)-10;const op=Math.random()<.5?'+':'-';items.push({q:`${a} ${op} (${b>=0?'+'+b:b})`,ans:op==='+'?a+b:a-b});}buildExNum('p23ex','p23pg',items);};
+
+LESSONS['2-4']=()=>`
+<div class="tabs"><button class="tab active" data-group="2-4" data-tab="e" onclick="showTab('e','2-4')">Explicació</button><button class="tab" data-group="2-4" data-tab="x" onclick="showTab('x','2-4')">Exercicis</button></div>
+<div class="panel active" data-group="2-4" data-panel="e">
+  <div class="card"><div class="card-title">Suma/resta de diversos enters</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:10px;">Elimina parèntesis aplicant la regla dels signes, i suma tots.</p>
+    <div class="formula-box" style="font-size:1rem;">+(+a)=+a | +(−a)=−a<br>−(+a)=−a | −(−a)=+a</div>
+    <div class="card" style="margin-top:10px;"><div class="card-title">Exemple</div>
+      <div style="font-size:14px;line-height:2;color:var(--text2);">3−(−2)+(−5)−(+1)<br>= 3<span style="color:#16a34a;font-weight:700;">+2</span><span style="color:#ef4444;font-weight:700;">−5−1</span><br>= (3+2)−(5+1) = 5−6 = <b>−1</b></div>
+    </div>
+    <div class="tip">Truc: agrupa tots els + i tots els −, i resta els totals.</div>
+  </div>
+</div>
+<div class="panel" data-group="2-4" data-panel="x">
+  <div id="p24ex"></div><div class="progress-line" id="p24pg"></div>
+  <button class="new-btn" onclick="g24()">Exercicis nous ↺</button>
+</div>`;
+window.IL_2_4=function(){g24();};
+window.g24=function(){const items=[];for(let i=0;i<6;i++){const ns=[...Array(3)].map(()=>{let n=0;while(n===0)n=Math.floor(Math.random()*14)-7;return n;});const q=ns.map((n,j)=>j===0?String(n):` ${n>=0?'+ (+'+n+')':'- ('+Math.abs(n)+')'}`).join('');items.push({q,ans:ns.reduce((s,n)=>s+n,0)});}buildExNum('p24ex','p24pg',items);};
+
+LESSONS['2-5']=()=>`
+<div class="tabs"><button class="tab active" data-group="2-5" data-tab="e" onclick="showTab('e','2-5')">Regla de signes</button><button class="tab" data-group="2-5" data-tab="x" onclick="showTab('x','2-5')">Exercicis</button></div>
+<div class="panel active" data-group="2-5" data-panel="e">
+  <div class="card"><div class="card-title">Multiplicació i divisió d'enters</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+      <div style="padding:14px;background:#dcfce7;border-radius:12px;text-align:center;"><div style="font-size:1.8rem;font-weight:900;color:#16a34a;">+×+=+<br>−×−=+</div><div style="font-size:13px;color:var(--text2);margin-top:8px;">Mateixos signes → positiu</div></div>
+      <div style="padding:14px;background:#fee2e2;border-radius:12px;text-align:center;"><div style="font-size:1.8rem;font-weight:900;color:#ef4444;">+×−=−<br>−×+=−</div><div style="font-size:13px;color:var(--text2);margin-top:8px;">Signes contraris → negatiu</div></div>
+    </div>
+    <div class="tip" style="margin-top:12px;">(−3)×(−4)=<b>+12</b> | (+5)×(−2)=<b>−10</b> | (−8)÷(−2)=<b>+4</b></div>
+  </div>
+</div>
+<div class="panel" data-group="2-5" data-panel="x">
+  <div id="p25ex"></div><div class="progress-line" id="p25pg"></div>
+  <button class="new-btn" onclick="g25()">Exercicis nous ↺</button>
+</div>`;
+window.IL_2_5=function(){g25();};
+window.g25=function(){const items=[];for(let i=0;i<8;i++){const a=(Math.floor(Math.random()*8)+1)*(Math.random()<.5?-1:1);const b=(Math.floor(Math.random()*8)+1)*(Math.random()<.5?-1:1);if(Math.random()<.5){const c=a*b;items.push({q:`(${c}) ÷ (${a})`,ans:b});}else items.push({q:`(${a}) × (${b})`,ans:a*b});}buildExNum('p25ex','p25pg',items);};
+
+LESSONS['2-6']=()=>`
+<div class="tabs"><button class="tab active" data-group="2-6" data-tab="e" onclick="showTab('e','2-6')">Explicació</button><button class="tab" data-group="2-6" data-tab="x" onclick="showTab('x','2-6')">Exercicis</button></div>
+<div class="panel active" data-group="2-6" data-panel="e">
+  <div class="card"><div class="card-title">Potències de nombres enters</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+      <div style="padding:14px;background:#dcfce7;border-radius:12px;text-align:center;"><div style="font-weight:700;color:#16a34a;">Exponent PARELL → +</div><div style="font-size:14px;margin-top:8px;">(−2)²=<b>4</b><br>(−3)⁴=<b>81</b></div></div>
+      <div style="padding:14px;background:#fee2e2;border-radius:12px;text-align:center;"><div style="font-weight:700;color:#ef4444;">Exponent SENAR → −</div><div style="font-size:14px;margin-top:8px;">(−2)³=<b>−8</b><br>(−3)³=<b>−27</b></div></div>
+    </div>
+    <div class="tip" style="margin-top:12px;">⚠️ −2²=−(2²)=−4 ≠ (−2)²=+4. El parèntesi canvia el resultat!</div>
+  </div>
+</div>
+<div class="panel" data-group="2-6" data-panel="x">
+  <div id="p26ex"></div><div class="progress-line" id="p26pg"></div>
+  <button class="new-btn" onclick="g26()">Exercicis nous ↺</button>
+</div>`;
+window.IL_2_6=function(){g26();};
+window.g26=function(){const pool=[];for(let b=-5;b<=5;b++){if(b===0)continue;for(let e=2;e<=4;e++)pool.push({q:`(${b})<sup>${e}</sup>`,ans:Math.round(Math.pow(b,e))});}buildExNum('p26ex','p26pg',shuffle(pool).slice(0,7));};
+
+LESSONS['2-7']=()=>`
+<div class="tabs"><button class="tab active" data-group="2-7" data-tab="e" onclick="showTab('e','2-7')">Explicació</button><button class="tab" data-group="2-7" data-tab="x" onclick="showTab('x','2-7')">Exercicis</button></div>
+<div class="panel active" data-group="2-7" data-panel="e">
+  <div class="card"><div class="card-title">Arrel quadrada</div>
+    <div class="formula-box">√n = el número que elevat al quadrat dóna n</div>
+    <div style="text-align:center;font-size:14px;color:var(--text2);margin:8px 0;">√25=5 perquè 5²=25</div>
+    <div class="tip">L'arrel quadrada d'un negatiu NO existeix en els reals.</div>
+  </div>
+  <div class="card"><div class="card-title">Quadrats perfectes fins a 225</div>
+    <div class="num-line" style="flex-wrap:wrap;">${[1,4,9,16,25,36,49,64,81,100,121,144,169,196,225].map(n=>`<div class="nl-box nl-pos" style="font-size:12px;">√${n}=${Math.sqrt(n)}</div>`).join('')}</div>
+  </div>
+</div>
+<div class="panel" data-group="2-7" data-panel="x">
+  <div id="p27ex"></div><div class="progress-line" id="p27pg"></div>
+  <button class="new-btn" onclick="g27()">Exercicis nous ↺</button>
+</div>`;
+window.IL_2_7=function(){g27();};
+window.g27=function(){buildExNum('p27ex','p27pg',shuffle([1,4,9,16,25,36,49,64,81,100,121,144,169,196,225]).slice(0,7).map(n=>({q:`√${n}`,ans:Math.sqrt(n)})));};
+
+LESSONS['2-8']=()=>`
+<div class="tabs"><button class="tab active" data-group="2-8" data-tab="e" onclick="showTab('e','2-8')">Ordre d'operacions</button><button class="tab" data-group="2-8" data-tab="x" onclick="showTab('x','2-8')">Exercicis</button></div>
+<div class="panel active" data-group="2-8" data-panel="e">
+  <div class="card"><div class="card-title">Ordre de les operacions</div>
+    ${[['1r','Parèntesis ()','Resol primer el que hi ha dins'],['2n','Exponents i arrels','Potències i √'],['3r','× i ÷','D\'esquerra a dreta'],['4t','+ i −','D\'esquerra a dreta']].map(([n,t,d])=>`<div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="width:32px;height:32px;border-radius:8px;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:Nunito,sans-serif;font-weight:900;font-size:13px;flex-shrink:0;">${n}</div><div><div style="font-weight:700;">${t}</div><div style="font-size:13px;color:var(--text2);">${d}</div></div></div>`).join('')}
+    <div class="card" style="margin-top:12px;"><div class="card-title">Exemple</div><div style="font-size:14px;line-height:2;color:var(--text2);">3+(−2)²×4−8÷(−2)<br>= 3+<b>4</b>×4−8÷(−2) ← exp<br>= 3+<b>16</b>−<b>(−4)</b> ← ×÷<br>= 3+16+4 = <b>23</b></div></div>
+  </div>
+</div>
+<div class="panel" data-group="2-8" data-panel="x">
+  <div id="p28ex"></div><div class="progress-line" id="p28pg"></div>
+  <button class="new-btn" onclick="g28()">Exercicis nous ↺</button>
+</div>`;
+window.IL_2_8=function(){g28();};
+window.g28=function(){buildExNum('p28ex','p28pg',shuffle([{q:'3+2×(−4)',ans:-5,hint:'Primer ×'},{q:'(−2)²+3',ans:7,hint:'(−2)²=4'},{q:'10−(−3)²',ans:1,hint:'(−3)²=9'},{q:'(−2)×3+8',ans:2,hint:'−6+8'},{q:'4×(−2)−(−6)',ans:-2,hint:'−8+6'},{q:'(3+(−5))×4',ans:-8,hint:'−2×4'},{q:'12÷(−3)+7',ans:3,hint:'−4+7'},{q:'(−1)³×5',ans:-5,hint:'(−1)³=−1'}]).slice(0,6));};
+
+// ── UNITAT 3 — FRACCIONS ────────────────────────────────────────
+
+// Helper fraccions
+function mcd2(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;}
+function simplify(n,d){const g=mcd2(Math.abs(n),Math.abs(d));return[n/g,d/g];}
+function fracStr(n,d){const [sn,sd]=simplify(n,d);return sd===1?String(sn):`${sn}/${sd}`;}
+function renderFrac(n,d,color='var(--accent)'){return `<span style="display:inline-flex;flex-direction:column;align-items:center;gap:0;vertical-align:middle;margin:0 4px;"><span style="font-weight:700;color:${color};font-family:Nunito,sans-serif;font-size:1rem;line-height:1.1;">${n}</span><span style="border-top:2px solid ${color};width:100%;display:block;"></span><span style="font-weight:700;color:${color};font-family:Nunito,sans-serif;font-size:1rem;line-height:1.1;">${d}</span></span>`;}
+
+// Exercici fracció: l'alumne escriu numerador i denominador
+function buildExFrac(cid,pid,items){
+  const st=items.map(e=>({...e,answered:false}));
+  document.getElementById(cid).innerHTML=st.map((ex,i)=>`<div class="ex" style="flex-wrap:wrap;gap:10px;">
+    <span class="ex-q" style="min-width:200px;">${ex.q}</span>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <input class="ex-inp" type="number" id="${cid}n${i}" placeholder="num" style="width:70px;">
+        <div style="border-top:2px solid var(--border);width:70px;"></div>
+        <input class="ex-inp" type="number" id="${cid}d${i}" placeholder="den" style="width:70px;">
+      </div>
+      <button class="check-btn" onclick="chkFrac('${cid}','${pid}',${i},${ex.n},${ex.d})">Comprova</button>
+      <span id="${cid}fb${i}"></span>
+      ${ex.hint?`<span class="hint-link" onclick="showHint('${cid}',${i},'${ex.hint}')">Pista</span>`:''}
+    </div>
+  </div>`).join('');
+  document.getElementById(cid)._st=st;updProg(cid,pid);
+}
+function chkFrac(cid,pid,i,an,ad){
+  const st=document.getElementById(cid)._st;
+  if(st[i].answered)return;
+  const n=parseInt(document.getElementById(cid+'n'+i).value);
+  const d=parseInt(document.getElementById(cid+'d'+i).value);
+  if(isNaN(n)||isNaN(d)||d===0){document.getElementById(cid+'fb'+i).className='fb-wrong';document.getElementById(cid+'fb'+i).textContent='✗ Escriu numerador i denominador';return;}
+  // check cross multiplication equivalence
+  const ok=(n*ad===an*d && d>0);
+  const fb=document.getElementById(cid+'fb'+i);
+  if(ok){fb.className='fb-ok';fb.textContent='✓ Correcte!';st[i].answered=true;document.getElementById(cid+'n'+i).disabled=true;document.getElementById(cid+'d'+i).disabled=true;}
+  else{fb.className='fb-wrong';fb.textContent='✗ Torna-ho a provar';document.getElementById(cid+'n'+i).value='';document.getElementById(cid+'d'+i).value='';}
+  updProg(cid,pid);
+}
+
+// Exercici comprensió lectora (resposta numèrica)
+function buildExCL(cid,pid,items){
+  const st=items.map(e=>({...e,answered:false}));
+  document.getElementById(cid).innerHTML=st.map((ex,i)=>{
+    const ph=ex.ph||'?';
+    const fmt=ex.fmt||'';
+    return `<div class="ex" style="flex-direction:column;align-items:flex-start;gap:10px;">
+    <div style="background:var(--surface2);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.7;border-left:3px solid var(--accent);">${ex.text}</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <span style="font-size:14px;font-weight:700;">${ex.q}</span>
+      ${ex.isFrac?`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><input class="ex-inp" type="number" id="${cid}n${i}" placeholder="num" style="width:70px;"><div style="border-top:2px solid var(--border);width:70px;"></div><input class="ex-inp" type="number" id="${cid}d${i}" placeholder="den" style="width:70px;"></div>
+      <button class="check-btn" onclick="chkCLFrac('${cid}','${pid}',${i},${ex.an},${ex.ad})">Comprova</button>`
+      :`<div style="display:flex;flex-direction:column;gap:3px;">
+        <input class="ex-inp" type="text" id="${cid}i${i}" placeholder="${ph}" style="width:110px;" onkeydown="if(event.key==='Enter')chkCLNum('${cid}','${pid}',${i},${ex.ans})">
+        ${fmt?`<span style="font-size:10px;color:var(--text2);">${fmt}</span>`:''}
+      </div>
+      <button class="check-btn" onclick="chkCLNum('${cid}','${pid}',${i},${ex.ans})">Comprova</button>`}
+      <span id="${cid}fb${i}"></span>
+    </div>
+    ${ex.hint?`<span class="hint-link" onclick="showHint('${cid}',${i},'${ex.hint}')">Pista</span>`:''}
+  </div>`;}).join('');
+  document.getElementById(cid)._st=st;updProg(cid,pid);
+}
+function chkCLNum(cid,pid,i,ans){
+  const st=document.getElementById(cid)._st;if(st[i].answered)return;
+  const inp=document.getElementById(cid+'i'+i),fb=document.getElementById(cid+'fb'+i);
+  const val=parseFloat(inp.value.toString().replace(',','.'));
+  if(Math.abs(val-ans)<0.001){fb.className='fb-ok';fb.textContent='✓ Correcte!';inp.disabled=true;st[i].answered=true;}
+  else{fb.className='fb-wrong';fb.textContent='✗ No és correcte. Torna-ho a provar.';inp.value='';inp.focus();}
+  updProg(cid,pid);
+}
+function chkCLFrac(cid,pid,i,an,ad){
+  const st=document.getElementById(cid)._st;if(st[i].answered)return;
+  const n=parseInt(document.getElementById(cid+'n'+i).value),d=parseInt(document.getElementById(cid+'d'+i).value);
+  const fb=document.getElementById(cid+'fb'+i);
+  if(n*ad===an*d&&d>0){fb.className='fb-ok';fb.textContent='✓ Correcte!';st[i].answered=true;document.getElementById(cid+'n'+i).disabled=true;document.getElementById(cid+'d'+i).disabled=true;}
+  else{fb.className='fb-wrong';fb.textContent='✗ Torna-ho a provar';}
+  updProg(cid,pid);
+}
+
+LESSONS['3-1']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="3-1" data-tab="e" onclick="showTab('e','3-1')">Explicació</button>
+  <button class="tab" data-group="3-1" data-tab="x" onclick="showTab('x','3-1')">Exercicis</button>
+  <button class="tab" data-group="3-1" data-tab="cl" onclick="showTab('cl','3-1')">Problemes</button>
+</div>
+<div class="panel active" data-group="3-1" data-panel="e">
+  <div class="card"><div class="card-title">Què és una fracció?</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:12px;">Una fracció representa una o diverses parts d'un tot dividit en parts iguals.</p>
+    <div style="display:flex;justify-content:center;margin:16px 0;">
+      <div style="text-align:center;">
+        <svg width="200" height="50" viewBox="0 0 200 50">
+          ${[0,1,2,3,4].map(i=>`<rect x="${i*40+1}" y="5" width="38" height="38" rx="6" fill="${i<3?'#4f6ef7':'#e2e8f8'}" stroke="white" stroke-width="2"/>`).join('')}
+        </svg>
+        <div style="margin-top:8px;font-size:2rem;font-weight:900;font-family:Nunito,sans-serif;">3/5</div>
+        <div style="font-size:13px;color:var(--text2);">3 parts acolorides de 5 en total</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+      <div style="padding:14px;background:#eef1ff;border-radius:12px;text-align:center;">
+        <div style="font-size:2rem;font-weight:900;color:#4f6ef7;font-family:Nunito,sans-serif;">3</div>
+        <div style="font-weight:700;margin-top:4px;">NUMERADOR</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;">Parts que agafem</div>
+      </div>
+      <div style="padding:14px;background:#fee2e2;border-radius:12px;text-align:center;">
+        <div style="font-size:2rem;font-weight:900;color:#ef4444;font-family:Nunito,sans-serif;">5</div>
+        <div style="font-weight:700;margin-top:4px;">DENOMINADOR</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;">Parts iguals del total</div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:12px;">El denominador mai pot ser 0. Dividir per 0 no té sentit.</div>
+  </div>
+  <div class="card"><div class="card-title">Fracció com a divisió</div>
+    <div class="formula-box">3/4 = 3 ÷ 4 = 0,75</div>
+    <p style="font-size:14px;color:var(--text2);">Repartir 3 pizzes entre 4 amics → cada u en rep 3/4.</p>
+  </div>
+</div>
+<div class="panel" data-group="3-1" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px;">Escriu la fracció que representa cada situació.</p>
+  <div id="p31ex"></div><div class="progress-line" id="p31pg"></div>
+  <button class="new-btn" onclick="g31()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="3-1" data-panel="cl">
+  <div id="p31cl"></div><div class="progress-line" id="p31clpg"></div>
+</div>`;
+window.IL_3_1=function(){g31();g31cl();};
+window.g31=function(){
+  buildExFrac('p31ex','p31pg',shuffle([
+    {q:'2 parts de 7 en total',n:2,d:7},{q:'5 parts de 8 en total',n:5,d:8},
+    {q:'1 part de 4 en total',n:1,d:4},{q:'3 parts de 10 en total',n:3,d:10},
+    {q:'7 parts de 12 en total',n:7,d:12},{q:'4 parts de 9 en total',n:4,d:9},
+    {q:'2 parts de 3 en total',n:2,d:3},{q:'5 parts de 6 en total',n:5,d:6},
+  ]).slice(0,6));
+};
+window.g31cl=function(){
+  buildExCL('p31cl','p31clpg',[
+    {text:'La Sara té una pizzeria. Ha tallat una pizza en 8 porcions iguals i n\'ha venut 5.',q:'Quina fracció de la pizza ha venut?',isFrac:true,an:5,ad:8,hint:'Parts venudes / parts totals'},
+    {text:'En una classe de 24 alumnes, 9 porten ulleres.',q:'Quina fracció de la classe porta ulleres?',isFrac:true,an:9,ad:24,hint:'9 de cada 24'},
+    {text:'Un llibre té 200 pàgines. El Roc ha llegit 75 pàgines.',q:'Quina fracció del llibre ha llegit?',isFrac:true,an:75,ad:200,hint:'75 de 200'},
+    {text:'Una ampolla de suc tenia 1 litre. S\'han begut 3 de cada 4 parts iguals.',q:'Quina fracció s\'ha begut?',isFrac:true,an:3,ad:4,hint:'3 de 4 parts'},
+  ]);
+};
+
+LESSONS['3-2']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="3-2" data-tab="e" onclick="showTab('e','3-2')">Explicació</button>
+  <button class="tab" data-group="3-2" data-tab="x" onclick="showTab('x','3-2')">Exercicis</button>
+  <button class="tab" data-group="3-2" data-tab="cl" onclick="showTab('cl','3-2')">Problemes</button>
+</div>
+<div class="panel active" data-group="3-2" data-panel="e">
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+    <div class="card" style="border-top:3px solid #4f6ef7;text-align:center;">
+      <div class="card-title" style="color:#4f6ef7;">PRÒPIA</div>
+      <div style="font-size:2rem;font-weight:900;font-family:Nunito,sans-serif;">3/5</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:6px;">Numerador &lt; denominador<br>Valor &lt; 1</div>
+    </div>
+    <div class="card" style="border-top:3px solid #16a34a;text-align:center;">
+      <div class="card-title" style="color:#16a34a;">IMPRÒPIA</div>
+      <div style="font-size:2rem;font-weight:900;font-family:Nunito,sans-serif;">7/4</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:6px;">Numerador ≥ denominador<br>Valor ≥ 1</div>
+    </div>
+    <div class="card" style="border-top:3px solid #d97706;text-align:center;">
+      <div class="card-title" style="color:#d97706;">MIXTA</div>
+      <div style="font-size:2rem;font-weight:900;font-family:Nunito,sans-serif;">1¾</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:6px;">Número enter + fracció<br>= 7/4</div>
+    </div>
+  </div>
+  <div class="card"><div class="card-title">Convertir impròpia ↔ mixta</div>
+    <div style="font-size:14px;color:var(--text2);line-height:2;">
+      <b>Impròpia → Mixta:</b> 7÷4 = 1 resta 3 → 1¾<br>
+      <b>Mixta → Impròpia:</b> 1¾ → (1×4)+3 = 7 → 7/4
+    </div>
+    <div class="tip">La fracció mixta és la mateixa quantitat escrita d'una altra manera.</div>
+  </div>
+</div>
+<div class="panel" data-group="3-2" data-panel="x">
+  <div id="p32ex"></div><div class="progress-line" id="p32pg"></div>
+  <button class="new-btn" onclick="g32()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="3-2" data-panel="cl">
+  <div id="p32cl"></div><div class="progress-line" id="p32clpg"></div>
+</div>`;
+window.IL_3_2=function(){g32();g32cl();};
+window.g32=function(){
+  const fracs=[[3,5],[7,4],[2,7],[9,3],[1,6],[11,5],[4,4],[8,3],[2,9],[13,6],[5,5],[3,8]];
+  const items=shuffle(fracs).slice(0,8).map(([n,d])=>({q:`La fracció <b>${n}/${d}</b> és pròpia o impròpia?`,ans:n<d}));
+  buildExYN('p32ex','p32pg',items.map(it=>({...it,q:it.q+' (Sí = pròpia)'})));
+};
+window.g32cl=function(){
+  buildExCL('p32cl','p32clpg',[
+    {text:'La Maria ha menjat 7 trossos d\'una pizza tallada en 4 parts iguals.',q:'La fracció 7/4 és pròpia (Sí) o impròpia (No)?',isFrac:false,ans:0,hint:'7 > 4, és impròpia. Escriu 0 per No.'},
+    {text:'En Pere ha recorregut 3 km d\'un camí de 8 km.',q:'La fracció del camí recorregut és pròpia? Escriu 1 per Sí, 0 per No.',isFrac:false,ans:1,hint:'3 < 8, és pròpia'},
+    {text:'La fracció 11/4 és impròpia. Converteix-la a número mixt: la part entera és...',q:'Quina és la part entera de 11/4?',isFrac:false,ans:2,hint:'11 ÷ 4 = 2 resta 3'},
+    {text:'Tens el número mixt 2 i 3/5. Per convertir-lo a fracció impròpia: (2×5)+3 = ?',q:'Quin és el numerador de la fracció impròpia?',isFrac:false,ans:13,hint:'(2×5)+3=13, denominador=5'},
+  ]);
+};
+
+LESSONS['3-3']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="3-3" data-tab="e" onclick="showTab('e','3-3')">Explicació</button>
+  <button class="tab" data-group="3-3" data-tab="x" onclick="showTab('x','3-3')">Exercicis</button>
+  <button class="tab" data-group="3-3" data-tab="cl" onclick="showTab('cl','3-3')">Problemes</button>
+</div>
+<div class="panel active" data-group="3-3" data-panel="e">
+  <div class="card"><div class="card-title">Fraccions equivalents</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:12px;">Representen la mateixa quantitat amb numeradors i denominadors diferents.</p>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:12px 0;">
+      ${[[1,2],[2,4],[3,6],[4,8]].map(([n,d])=>`<div style="text-align:center;"><svg width="80" height="30" viewBox="0 0 80 30">${Array(d).fill(0).map((_,i)=>`<rect x="${i*(78/d)+1}" y="4" width="${78/d-2}" height="22" rx="3" fill="${i<n?'#4f6ef7':'#e2e8f8'}" stroke="white" stroke-width="1.5"/>`).join('')}</svg><div style="font-weight:700;font-family:Nunito,sans-serif;">${n}/${d}</div></div>`).join('')}
+    </div>
+    <div class="tip">1/2 = 2/4 = 3/6 = 4/8. Totes representen la meitat!</div>
+  </div>
+  <div class="card"><div class="card-title">Com trobar-les</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="padding:12px;background:var(--surface2);border-radius:10px;">
+        <div style="font-weight:700;margin-bottom:6px;">× pels dos</div>
+        <div style="font-size:14px;color:var(--text2);">2/3 × (4/4) = 8/12<br>2/3 × (5/5) = 10/15</div>
+      </div>
+      <div style="padding:12px;background:var(--surface2);border-radius:10px;">
+        <div style="font-weight:700;margin-bottom:6px;">÷ pels dos (simplificar)</div>
+        <div style="font-size:14px;color:var(--text2);">12/18 ÷ (6/6) = 2/3<br>8/12 ÷ (4/4) = 2/3</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px;"><div class="card-title">Fracció irreductible</div>
+      <p style="font-size:14px;color:var(--text2);">Una fracció és irreductible quan el MCD(numerador, denominador) = 1. Per simplificar, divideix els dos per el MCD.</p>
+      <div class="formula-box">12/18 → MCD(12,18)=6 → 12÷6 / 18÷6 = 2/3</div>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="3-3" data-panel="x">
+  <div class="level-tag lv1">Simplifica al màxim</div>
+  <div id="p33ex"></div><div class="progress-line" id="p33pg"></div>
+  <button class="new-btn" onclick="g33()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="3-3" data-panel="cl">
+  <div id="p33cl"></div><div class="progress-line" id="p33clpg"></div>
+</div>`;
+window.IL_3_3=function(){g33();g33cl();};
+window.g33=function(){
+  const pool=[[4,6],[6,9],[8,12],[10,15],[6,8],[9,12],[4,10],[6,14],[8,20],[12,16],[15,20],[10,25],[6,10],[9,15],[12,18]];
+  const items=shuffle(pool).slice(0,7).map(([n,d])=>{const [sn,sd]=simplify(n,d);return{q:`Simplifica ${n}/${d}`,n:sn,d:sd,hint:`MCD(${n},${d})=${mcd2(n,d)}`};});
+  buildExFrac('p33ex','p33pg',items);
+};
+window.g33cl=function(){
+  buildExCL('p33cl','p33clpg',[
+    {text:'En una granja hi ha 12 vaques i 8 cavalls. La fracció de cavalls sobre el total d\'animals és 8/20.',q:'Simplifica 8/20. Quin és el numerador de la fracció irreductible?',isFrac:false,ans:2,hint:'MCD(8,20)=4 → 2/5'},
+    {text:'Una recepta necessita 6 ous per fer 9 magdalenes. La fracció ous/magdalenes és 6/9.',q:'Simplifica 6/9. Quin és el denominador?',isFrac:false,ans:3,hint:'MCD(6,9)=3 → 2/3'},
+    {text:'El Jordi ha llegit 15 pàgines de 25. Vol saber quina fracció ha llegit en la forma més senzilla.',q:'Simplifica 15/25. Quin és el numerador?',isFrac:false,ans:3,hint:'MCD(15,25)=5 → 3/5'},
+    {text:'Dues fraccions són equivalents si el producte en creu és igual: a/b = c/d si a×d = b×c.',q:'Són equivalents 2/3 i 8/12? (1=Sí, 0=No)',isFrac:false,ans:1,hint:'2×12=24 i 3×8=24 → Sí'},
+  ]);
+};
+
+LESSONS['3-4']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="3-4" data-tab="e" onclick="showTab('e','3-4')">Mètode</button>
+  <button class="tab" data-group="3-4" data-tab="x" onclick="showTab('x','3-4')">Exercicis</button>
+  <button class="tab" data-group="3-4" data-tab="cl" onclick="showTab('cl','3-4')">Problemes</button>
+</div>
+<div class="panel active" data-group="3-4" data-panel="e">
+  <div class="card"><div class="card-title">Comparar fraccions</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+      <div style="padding:14px;background:#eef1ff;border-radius:12px;">
+        <div style="font-weight:700;color:#4f6ef7;margin-bottom:8px;">Mateix denominador</div>
+        <div style="font-size:14px;color:var(--text2);">3/7 vs 5/7<br>→ Compara numeradors<br>→ 3 &lt; 5, per tant 3/7 &lt; 5/7</div>
+      </div>
+      <div style="padding:14px;background:#fee2e2;border-radius:12px;">
+        <div style="font-weight:700;color:#ef4444;margin-bottom:8px;">Diferent denominador</div>
+        <div style="font-size:14px;color:var(--text2);">2/3 vs 3/5<br>→ Redueix a comú denominador<br>→ 10/15 vs 9/15 → 2/3 &gt; 3/5</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px;"><div class="card-title">Mètode de la creu (producte creuat)</div>
+      <div class="formula-box">a/b vs c/d → compara a×d amb b×c</div>
+      <div style="font-size:14px;color:var(--text2);text-align:center;">2/3 vs 3/5 → 2×5=10 vs 3×3=9 → 10&gt;9 → 2/3 &gt; 3/5</div>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="3-4" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Quina fracció és més gran?</p>
+  <div id="p34ex"></div><div class="progress-line" id="p34pg"></div>
+  <button class="new-btn" onclick="g34()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="3-4" data-panel="cl">
+  <div id="p34cl"></div><div class="progress-line" id="p34clpg"></div>
+</div>`;
+window.IL_3_4=function(){g34();g34cl();};
+window.g34=function(){
+  const st=[];
+  const pairs=[[1,3,1,4],[2,5,3,7],[3,4,5,6],[1,2,3,7],[4,5,7,9],[2,3,5,8],[3,7,2,5],[5,8,3,5],[1,4,2,9],[3,5,4,7]];
+  shuffle(pairs).slice(0,7).forEach(([an,ad,bn,bd],i)=>{
+    const aGtB=(an*bd)>(bn*ad);
+    st.push({a:`${an}/${ad}`,b:`${bn}/${bd}`,ans:aGtB,answered:false});
+  });
+  document.getElementById('p34ex').innerHTML=st.map((ex,i)=>`<div class="ex"><span class="ex-q">Quina és major: <b>${ex.a}</b> o <b>${ex.b}</b>?</span><div style="display:flex;gap:8px;"><button class="yn-btn" id="p34a${i}" onclick="a34(${i},'a')">${ex.a}</button><button class="yn-btn" id="p34b${i}" onclick="a34(${i},'b')">${ex.b}</button></div><span id="p34fb${i}"></span></div>`).join('');
+  document.getElementById('p34ex')._st=st;document.getElementById('p34pg').textContent='0 de '+st.length+' correctes';
+};
+window.a34=function(i,ch){
+  const st=document.getElementById('p34ex')._st;if(st[i].answered)return;
+  const ok=(ch==='a')===st[i].ans;
+  const ba=document.getElementById('p34a'+i),bb=document.getElementById('p34b'+i),fb=document.getElementById('p34fb'+i);
+  const cb=ch==='a'?ba:bb;
+  if(ok){cb.classList.add('yn-ok');fb.className='fb-ok';fb.textContent='✓ Correcte!';st[i].answered=true;}
+  else{cb.classList.add('yn-wrong');fb.className='fb-wrong';fb.textContent='✗ Torna-ho a provar';setTimeout(()=>{ba.className='yn-btn';bb.className='yn-btn';fb.textContent='';},700);}
+  document.getElementById('p34pg').textContent=st.filter(e=>e.answered).length+' de '+st.length+' correctes';
+};
+window.g34cl=function(){
+  buildExCL('p34cl','p34clpg',[
+    {text:'La Marta ha menjat 2/5 d\'una pasta de fulls i la Laia n\'ha menjat 3/8. Les dues volien saber qui n\'havia menjat més.',q:'Qui ha menjat més? (1=Marta, 2=Laia)',isFrac:false,ans:1,hint:'2/5 vs 3/8 → 16 vs 15 → 2/5 > 3/8'},
+    {text:'Dos atletes corren la mateixa distància. En Pau fa 3/4 del recorregut i en Leo fa 5/7.',q:'Qui ha corregut més? (1=Pau, 2=Leo)',isFrac:false,ans:2,hint:'3/4 vs 5/7 → 21 vs 20 → 5/7 > 3/4'},
+    {text:'En una botiga de pa, el matí s\'han venut 5/9 del pa i la tarda 4/7.',q:'En quin moment s\'ha venut més pa? (1=matí, 2=tarda)',isFrac:false,ans:2,hint:'5/9 vs 4/7 → 35 vs 36 → 4/7 > 5/9'},
+  ]);
+};
+
+LESSONS['3-5']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="3-5" data-tab="e" onclick="showTab('e','3-5')">Mètode</button>
+  <button class="tab" data-group="3-5" data-tab="x" onclick="showTab('x','3-5')">Exercicis</button>
+  <button class="tab" data-group="3-5" data-tab="cl" onclick="showTab('cl','3-5')">Problemes</button>
+</div>
+<div class="panel active" data-group="3-5" data-panel="e">
+  <div class="card"><div class="card-title">Suma i resta de fraccions</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+      <div style="padding:14px;background:#eef1ff;border-radius:12px;">
+        <div style="font-weight:700;color:#4f6ef7;margin-bottom:8px;">Mateix denominador</div>
+        <div class="formula-box" style="font-size:1rem;">a/n + b/n = (a+b)/n</div>
+        <div style="font-size:14px;color:var(--text2);">1/5 + 2/5 = 3/5</div>
+      </div>
+      <div style="padding:14px;background:#dcfce7;border-radius:12px;">
+        <div style="font-weight:700;color:#16a34a;margin-bottom:8px;">Diferent denominador</div>
+        <div style="font-size:13px;color:var(--text2);">1. Troba el mcm<br>2. Converteix<br>3. Suma/resta<br>4. Simplifica</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px;"><div class="card-title">Exemple complet</div>
+      <div style="font-size:14px;line-height:2;color:var(--text2);">
+        1/3 + 1/4<br>
+        mcm(3,4) = 12<br>
+        1/3 = 4/12 &nbsp;|&nbsp; 1/4 = 3/12<br>
+        4/12 + 3/12 = <b>7/12</b>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="3-5" data-panel="x">
+  <div id="p35ex"></div><div class="progress-line" id="p35pg"></div>
+  <button class="new-btn" onclick="g35()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="3-5" data-panel="cl">
+  <div id="p35cl"></div><div class="progress-line" id="p35clpg"></div>
+</div>`;
+window.IL_3_5=function(){g35();g35cl();};
+window.g35=function(){
+  const items=[];
+  // Mateix denominador
+  for(let i=0;i<3;i++){const d=shuffle([5,6,7,8,9,10])[0];const a=Math.floor(Math.random()*(d-2))+1;const b=Math.floor(Math.random()*(d-a-1))+1;const op=Math.random()<.5?'+':'-';const rn=op==='+'?a+b:a-b;if(rn<=0)continue;const [sn,sd]=simplify(rn,d);items.push({q:`${a}/${d} ${op} ${op==='+'?b:b}/${d}`,n:sn,d:sd,hint:`Mateix denominador: (${a}${op}${b})/${d}`});}
+  // Diferent denominador
+  const pairs=[[1,2,1,3],[1,3,1,4],[2,3,1,6],[3,4,1,8],[1,2,2,5],[2,3,3,4],[1,4,1,6],[3,5,1,3]];
+  shuffle(pairs).slice(0,5).forEach(([an,ad,bn,bd])=>{const l=lcm(ad,bd);const rn=(an*(l/ad))+(bn*(l/bd));const [sn,sd]=simplify(rn,l);items.push({q:`${an}/${ad} + ${bn}/${bd}`,n:sn,d:sd,hint:`mcm(${ad},${bd})=${l}`});});
+  buildExFrac('p35ex','p35pg',shuffle(items).slice(0,7));
+};
+window.g35cl=function(){
+  buildExCL('p35cl','p35clpg',[
+    {text:'La mare ha comprat 1/2 kg de formatge i 1/4 kg de pernil. Vol saber el total de kg comprats.',q:'Quants kg ha comprat en total? (numerador de la fracció simplificada)',isFrac:false,ans:3,hint:'1/2+1/4=2/4+1/4=3/4'},
+    {text:'Una ampolla tenia 3/4 de litre de suc. Han begut 1/3 de litre. Quant queda?',q:'Quant suc queda? (numerador de la fracció simplificada)',isFrac:false,ans:5,hint:'3/4-1/3=9/12-4/12=5/12'},
+    {text:'El Roc ha estudiat 1/3 del tema de mates i 2/5 del tema de llengua.',q:'Quina fracció total ha estudiat? (numerador amb denominador 15)',isFrac:false,ans:11,hint:'1/3+2/5=5/15+6/15=11/15'},
+    {text:'Una piscina es va omplir 2/5 el dilluns i 1/3 el dimarts.',q:'Quina fracció de la piscina s\'ha omplert? (numerador, denominador=15)',isFrac:false,ans:11,hint:'2/5+1/3=6/15+5/15=11/15'},
+  ]);
+};
+
+LESSONS['3-6']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="3-6" data-tab="e" onclick="showTab('e','3-6')">Mètode</button>
+  <button class="tab" data-group="3-6" data-tab="x" onclick="showTab('x','3-6')">Exercicis</button>
+  <button class="tab" data-group="3-6" data-tab="cl" onclick="showTab('cl','3-6')">Problemes</button>
+</div>
+<div class="panel active" data-group="3-6" data-panel="e">
+  <div class="card"><div class="card-title">Multiplicació de fraccions</div>
+    <div class="formula-box">a/b × c/d = (a×c) / (b×d)</div>
+    <div style="font-size:14px;color:var(--text2);text-align:center;margin:8px 0;">2/3 × 3/5 = (2×3)/(3×5) = 6/15 = <b>2/5</b></div>
+    <div class="tip">Multiplica numeradors entre ells i denominadors entre ells. Després simplifica.</div>
+  </div>
+  <div class="card"><div class="card-title">Fracció d'un nombre enter</div>
+    <div class="formula-box">2/3 de 12 = 2/3 × 12 = 24/3 = 8</div>
+    <div style="font-size:14px;color:var(--text2);">12 × 2/3 = (12×2)/3 = 24/3 = 8</div>
+    <div class="tip">Quan diu "fracció de" → és una multiplicació.</div>
+  </div>
+</div>
+<div class="panel" data-group="3-6" data-panel="x">
+  <div id="p36ex"></div><div class="progress-line" id="p36pg"></div>
+  <button class="new-btn" onclick="g36()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="3-6" data-panel="cl">
+  <div id="p36cl"></div><div class="progress-line" id="p36clpg"></div>
+</div>`;
+window.IL_3_6=function(){g36();g36cl();};
+window.g36=function(){
+  const pool=[];
+  const fracs=[[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5],[1,6],[5,6],[2,7],[3,7],[1,8],[3,8]];
+  for(let i=0;i<10;i++){const [an,ad]=fracs[Math.floor(Math.random()*fracs.length)];const [bn,bd]=fracs[Math.floor(Math.random()*fracs.length)];const [sn,sd]=simplify(an*bn,ad*bd);pool.push({q:`${an}/${ad} × ${bn}/${bd}`,n:sn,d:sd,hint:`${an*bn}/${ad*bd} simplificat`});}
+  buildExFrac('p36ex','p36pg',shuffle(pool).slice(0,7));
+};
+window.g36cl=function(){
+  buildExCL('p36cl','p36clpg',[
+    {text:'Una caixa té 24 llapis. En Roc agafa 3/4 de la caixa.',q:'Quants llapis agafa?',isFrac:false,ans:18,hint:'3/4 × 24 = 72/4 = 18'},
+    {text:'Una pizza es talla en 8 trossos. La família menja 3/4 de la pizza.',q:'Quants trossos mengen?',isFrac:false,ans:6,hint:'3/4 × 8 = 6'},
+    {text:'Una granja té 30 animals. 2/5 són vaques i la meitat de les vaques donen llet.',q:'Quantes vaques donen llet?',isFrac:false,ans:6,hint:'2/5 de 30=12 vaques. 1/2 de 12=6'},
+    {text:'El Pol té 20 euros d\'estalvis. Gasta 2/5 en un llibre i 1/4 en llaminadures.',q:'Quants euros ha gastat en total?',isFrac:false,ans:13,hint:'2/5×20=8 i 1/4×20=5. Total: 8+5=13'},
+  ]);
+};
+
+LESSONS['3-7']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="3-7" data-tab="e" onclick="showTab('e','3-7')">Mètode</button>
+  <button class="tab" data-group="3-7" data-tab="x" onclick="showTab('x','3-7')">Exercicis</button>
+  <button class="tab" data-group="3-7" data-tab="cl" onclick="showTab('cl','3-7')">Problemes</button>
+</div>
+<div class="panel active" data-group="3-7" data-panel="e">
+  <div class="card"><div class="card-title">Divisió de fraccions</div>
+    <div class="formula-box">a/b ÷ c/d = a/b × d/c</div>
+    <p style="font-size:14px;color:var(--text2);text-align:center;margin:8px 0;">Dividir per una fracció = multiplicar per la seva inversa (girar el divisor)</p>
+    <div style="text-align:center;font-size:15px;color:var(--text2);">2/3 ÷ 4/5 = 2/3 × 5/4 = 10/12 = <b>5/6</b></div>
+    <div class="tip">La fracció inversa de a/b és b/a. Recorda: "gira el divisor i multiplica".</div>
+  </div>
+  <div class="card"><div class="card-title">Exemples</div>
+    <div style="font-size:14px;color:var(--text2);line-height:2.2;">
+      3/4 ÷ 1/2 = 3/4 × 2/1 = 6/4 = <b>3/2</b><br>
+      5/6 ÷ 5/3 = 5/6 × 3/5 = 15/30 = <b>1/2</b><br>
+      4 ÷ 2/3 = 4/1 × 3/2 = 12/2 = <b>6</b>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="3-7" data-panel="x">
+  <div id="p37ex"></div><div class="progress-line" id="p37pg"></div>
+  <button class="new-btn" onclick="g37()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="3-7" data-panel="cl">
+  <div id="p37cl"></div><div class="progress-line" id="p37clpg"></div>
+</div>`;
+window.IL_3_7=function(){g37();g37cl();};
+window.g37=function(){
+  const pool=[];
+  const fracs=[[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5],[1,6],[5,6]];
+  for(let i=0;i<10;i++){const [an,ad]=fracs[Math.floor(Math.random()*fracs.length)];const [bn,bd]=fracs[Math.floor(Math.random()*fracs.length)];if(bn===0)continue;const [sn,sd]=simplify(an*bd,ad*bn);if(sd===0)continue;pool.push({q:`${an}/${ad} ÷ ${bn}/${bd}`,n:sn,d:sd,hint:`Gira: ${an}/${ad} × ${bd}/${bn}`});}
+  buildExFrac('p37ex','p37pg',shuffle(pool).slice(0,7));
+};
+window.g37cl=function(){
+  buildExCL('p37cl','p37clpg',[
+    {text:'Tens 3/4 de kg de farina i vols fer paquets de 1/8 kg cadascun.',q:'Quants paquets pots fer?',isFrac:false,ans:6,hint:'3/4 ÷ 1/8 = 3/4 × 8 = 6'},
+    {text:'Una corda de 5/6 de metre es talla en trossos de 1/6 de metre.',q:'Quants trossos s\'obtenen?',isFrac:false,ans:5,hint:'5/6 ÷ 1/6 = 5'},
+    {text:'Tens 2/3 de pizza i la vols repartir en porcions de 1/6 cadascuna.',q:'Quantes porcions surten?',isFrac:false,ans:4,hint:'2/3 ÷ 1/6 = 2/3 × 6 = 4'},
+    {text:'Un dipòsit conté 3/5 de litre d\'aigua. Es reparteix en ampolles de 3/10 de litre.',q:'Quantes ampolles s\'omplen?',isFrac:false,ans:2,hint:'3/5 ÷ 3/10 = 3/5 × 10/3 = 2'},
+  ]);
+};
+
+LESSONS['3-8']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="3-8" data-tab="e" onclick="showTab('e','3-8')">Ordre d'operacions</button>
+  <button class="tab" data-group="3-8" data-tab="x" onclick="showTab('x','3-8')">Exercicis</button>
+  <button class="tab" data-group="3-8" data-tab="cl" onclick="showTab('cl','3-8')">Problemes</button>
+</div>
+<div class="panel active" data-group="3-8" data-panel="e">
+  <div class="card"><div class="card-title">Operacions combinades amb fraccions</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:10px;">El mateix ordre que amb enters: parèntesis → × i ÷ → + i −</p>
+    <div class="card"><div class="card-title">Exemple 1</div>
+      <div style="font-size:14px;line-height:2;color:var(--text2);">
+        1/2 + 1/3 × 3/4<br>
+        = 1/2 + (1/3 × 3/4) &nbsp;&nbsp; ← primer ×<br>
+        = 1/2 + 3/12<br>
+        = 1/2 + 1/4<br>
+        = 2/4 + 1/4 = <b>3/4</b>
+      </div>
+    </div>
+    <div class="card"><div class="card-title">Exemple 2</div>
+      <div style="font-size:14px;line-height:2;color:var(--text2);">
+        (1/2 + 1/3) × 2/5<br>
+        = (3/6 + 2/6) × 2/5 &nbsp;&nbsp; ← primer parèntesi<br>
+        = 5/6 × 2/5<br>
+        = 10/30 = <b>1/3</b>
+      </div>
+    </div>
+    <div class="tip">Sempre simplifica al final. I recorda: ÷ fracció = × inversa.</div>
+  </div>
+</div>
+<div class="panel" data-group="3-8" data-panel="x">
+  <div id="p38ex"></div><div class="progress-line" id="p38pg"></div>
+  <button class="new-btn" onclick="g38()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="3-8" data-panel="cl">
+  <div id="p38cl"></div><div class="progress-line" id="p38clpg"></div>
+</div>`;
+window.IL_3_8=function(){g38();g38cl();};
+window.g38=function(){
+  // Fixed set of combined operations
+  const pool=[
+    {q:'1/2 + 1/3 × 3/4',n:3,d:4,hint:'Primer ×: 1/4. Després: 1/2+1/4=3/4'},
+    {q:'(1/2 + 1/3) × 2/5',n:1,d:3,hint:'Parèntesi: 5/6. Llavors ×2/5=10/30=1/3'},
+    {q:'3/4 − 1/2 × 1/3',n:7,d:12,hint:'Primer ×: 1/6. Llavors: 3/4−1/6=9/12−2/12=7/12'},
+    {q:'(3/4 − 1/4) × 4/5',n:2,d:5,hint:'Parèntesi: 2/4=1/2. Llavors: 1/2×4/5=2/5'},
+    {q:'1/3 × 3/5 + 1/5',n:2,d:5,hint:'Primer ×: 1/5. Llavors: 1/5+1/5=2/5'},
+    {q:'2/3 ÷ 1/3 − 1',n:1,d:1,hint:'÷ → ×3: 2. Llavors: 2−1=1'},
+    {q:'1/4 + 3/4 ÷ 3/8',n:5,d:2,hint:'÷3/8=×8/3: 3/4×8/3=2. Llavors: 1/4+2=9/4'},
+    {q:'(2/3 + 1/6) × 3',n:5,d:2,hint:'Parèntesi: 5/6. Llavors: 5/6×3=5/2'},
+  ];
+  buildExFrac('p38ex','p38pg',shuffle(pool).slice(0,6));
+};
+window.g38cl=function(){
+  buildExCL('p38cl','p38clpg',[
+    {text:'La iaia fa una recepta que necessita 1/3 de tassa de sucre i el doble de farina. El doble d\'1/3 és 2/3. La iaia afegeix primer totes dues.',q:'Quantes tasses d\'ingredient afegeix? (numerador amb denominador 3)',isFrac:false,ans:3,hint:'1/3 + 2/3 = 3/3 = 1 tassa sencera'},
+    {text:'En Marc té 3/4 de la seva paga estalviada. Gasta 1/3 d\'allò que té estalviat.',q:'Quina fracció de la paga ha gastat? (numerador, denominador=4)',isFrac:false,ans:1,hint:'1/3 × 3/4 = 3/12 = 1/4'},
+    {text:'Una granota salta 1/2 metre cada salt. Fa 3 salts endavant i 1/4 de metre enrere.',q:'Quants metres ha avançat en total? (numerador amb denominador 4)',isFrac:false,ans:5,hint:'3×1/2=3/2. 3/2−1/4=6/4−1/4=5/4'},
+    {text:'La Núria llegeix 2/5 d\'un llibre el matí. La tarda llegeix la meitat del que ha llegit al matí.',q:'Quina fracció total ha llegit? (numerador, denominador=5)',isFrac:false,ans:3,hint:'2/5 + 1/2×2/5 = 2/5+1/5 = 3/5'},
+  ]);
+};
+
+// ── UNITAT 4 — NOMBRES DECIMALS ─────────────────────────────────
+
+function round2(x){return Math.round(x*100)/100;}
+function fmtD(x){return parseFloat(x.toFixed(4)).toString();}
+
+function buildExDec(cid,pid,items){
+  const st=items.map(e=>({...e,answered:false}));
+  document.getElementById(cid).innerHTML=st.map((ex,i)=>{
+    const eg=ex.eg||'ex: 3,75';
+    return `<div class="ex" style="flex-wrap:wrap;gap:10px;">
+    <span class="ex-q" style="min-width:180px;">${ex.q} =</span>
+    <div style="display:flex;flex-direction:column;gap:3px;">
+      <input class="ex-inp" type="text" id="${cid}i${i}" placeholder="${eg}" style="width:120px;" onkeydown="if(event.key==='Enter')chkDec('${cid}','${pid}',${i})">
+      <span style="font-size:10px;color:var(--text2);">Pots usar coma o punt</span>
+    </div>
+    <button class="check-btn" onclick="chkDec('${cid}','${pid}',${i})">Comprova</button>
+    <span id="${cid}fb${i}"></span>
+    ${ex.hint?`<span class="hint-link" onclick="showHint('${cid}',${i},'${ex.hint}')">Pista</span>`:''}
+  </div>`;}).join('');
+  document.getElementById(cid)._st=st;updProg(cid,pid);
+}
+function chkDec(cid,pid,i){
+  const st=document.getElementById(cid)._st;if(st[i].answered)return;
+  const raw=document.getElementById(cid+'i'+i).value.trim().replace(',','.');
+  const val=parseFloat(raw);
+  const fb=document.getElementById(cid+'fb'+i);
+  if(isNaN(val)){fb.className='fb-wrong';fb.textContent='✗ Escriu un número (pots usar coma o punt decimal)';return;}
+  const ok=Math.abs(val-st[i].ans)<0.001;
+  if(ok){fb.className='fb-ok';fb.textContent='✓ Correcte!';document.getElementById(cid+'i'+i).disabled=true;st[i].answered=true;}
+  else{fb.className='fb-wrong';fb.textContent='✗ No és correcte. Prova-ho de nou.';document.getElementById(cid+'i'+i).value='';document.getElementById(cid+'i'+i).focus();}
+  updProg(cid,pid);
+}
+
+LESSONS['4-1']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="4-1" data-tab="e" onclick="showTab('e','4-1')">Explicació</button>
+  <button class="tab" data-group="4-1" data-tab="x" onclick="showTab('x','4-1')">Exercicis</button>
+  <button class="tab" data-group="4-1" data-tab="cl" onclick="showTab('cl','4-1')">Problemes</button>
+</div>
+<div class="panel active" data-group="4-1" data-panel="e">
+  <div class="card"><div class="card-title">Estructura d'un nombre decimal</div>
+    <div style="display:flex;justify-content:center;margin:16px 0;font-family:Nunito,sans-serif;">
+      <div style="text-align:center;">
+        <div style="font-size:2.5rem;font-weight:900;letter-spacing:4px;"><span style="color:#4f6ef7;">34</span><span style="color:var(--text2);">,</span><span style="color:#ef4444;">7</span><span style="color:#16a34a;">5</span><span style="color:#d97706;">2</span></div>
+        <div style="display:flex;justify-content:center;gap:0;margin-top:8px;font-size:11px;">
+          <div style="width:54px;text-align:center;color:#4f6ef7;font-weight:700;">Part entera</div>
+          <div style="width:16px;"></div>
+          <div style="width:22px;text-align:center;color:#ef4444;font-weight:700;">dèc</div>
+          <div style="width:22px;text-align:center;color:#16a34a;font-weight:700;">cen</div>
+          <div style="width:22px;text-align:center;color:#d97706;font-weight:700;">mil</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;">
+      <div style="padding:10px;background:#fee2e2;border-radius:10px;text-align:center;"><div style="font-weight:700;color:#ef4444;">Dècimes</div><div style="font-size:13px;color:var(--text2);">1a xifra = 1/10</div></div>
+      <div style="padding:10px;background:#dcfce7;border-radius:10px;text-align:center;"><div style="font-weight:700;color:#16a34a;">Centèsimes</div><div style="font-size:13px;color:var(--text2);">2a xifra = 1/100</div></div>
+      <div style="padding:10px;background:#fef3c7;border-radius:10px;text-align:center;"><div style="font-weight:700;color:#d97706;">Mil·lèsimes</div><div style="font-size:13px;color:var(--text2);">3a xifra = 1/1000</div></div>
+    </div>
+    <div class="tip">En català s'usa la coma: 3,75 (no 3.75)</div>
+  </div>
+</div>
+<div class="panel" data-group="4-1" data-panel="x">
+  <div id="p41ex"></div><div class="progress-line" id="p41pg"></div>
+  <button class="new-btn" onclick="g41()">Exercicis nous</button>
+</div>
+<div class="panel" data-group="4-1" data-panel="cl">
+  <div id="p41cl"></div><div class="progress-line" id="p41clpg"></div>
+</div>`;
+window.IL_4_1=function(){g41();g41cl();};
+window.g41=function(){
+  buildExNum('p41ex','p41pg',shuffle([
+    {q:'Quantes decimes te 3,752?',ans:7,hint:'1a xifra decimal'},
+    {q:'Quantes centesimes te 5,489?',ans:8,hint:'2a xifra decimal'},
+    {q:'Quantes milllesimes te 2,046?',ans:6,hint:'3a xifra decimal'},
+    {q:'Quantes decimes te 0,301?',ans:3,hint:'1a xifra = 3'},
+    {q:'Part entera de 7,83?',ans:7,hint:'A l\'esquerra de la coma'},
+    {q:'Quantes centesimes te 1,507?',ans:0,hint:'2a xifra = 0'},
+    {q:'Quantes decimes te 9,999?',ans:9,hint:'1a xifra = 9'},
+    {q:'Part entera de 0,75?',ans:0,hint:'A l\'esquerra de la coma'},
+  ]).slice(0,6));
+};
+window.g41cl=function(){
+  buildExCL('p41cl','p41clpg',[
+    {text:'A la pastisseria, el pes d\'un passis es 1,375 kg. La xifra 3 correspon a les decimes.',q:'Quantes centesimes representa la xifra 7?',isFrac:false,ans:7,hint:'2a posicio decimal de 1,375 es 7'},
+    {text:'Un pot de mel pesa 0,850 kg. La xifra 8 ocupa el lloc de les decimes.',q:'Quantes milllesimes indica la xifra 0 al final?',isFrac:false,ans:0,hint:'3a posicio decimal es 0'},
+    {text:'El record d\'un esportista es 9,573 m/s.',q:'La xifra 5 representa quantes decimes?',isFrac:false,ans:5,hint:'Primera posicio decimal'},
+    {text:'Un termometre marca 36,75 graus.',q:'Quantes centesimes te 36,75?',isFrac:false,ans:7,hint:'2a posicio decimal de 36,75 es 7'},
+  ]);
+};
+
+LESSONS['4-2']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="4-2" data-tab="e" onclick="showTab('e','4-2')">Explicació</button>
+  <button class="tab" data-group="4-2" data-tab="x" onclick="showTab('x','4-2')">Exercicis</button>
+  <button class="tab" data-group="4-2" data-tab="cl" onclick="showTab('cl','4-2')">Problemes</button>
+</div>
+<div class="panel active" data-group="4-2" data-panel="e">
+  <div class="card"><div class="card-title">Com comparar nombres decimals</div>
+    <div style="font-size:14px;color:var(--text2);line-height:2.2;"><b>1r.</b> Compara la part entera.<br><b>2n.</b> Si iguals, compara decimes.<br><b>3r.</b> Si iguals, compara centesimes. Etc.</div>
+    <div class="card" style="margin-top:12px;"><div class="card-title">Exemples</div>
+      <div style="font-size:14px;color:var(--text2);line-height:2.2;">3,75 vs 3,69 -> 7 > 6 -> <b>3,75 > 3,69</b><br>0,4 vs 0,40 -> iguals -> <b>0,4 = 0,40</b></div>
+    </div>
+    <div class="tip">Afegeix zeros a la dreta fins igualar xifres, i compara com si fossin enters.</div>
+  </div>
+</div>
+<div class="panel" data-group="4-2" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Quin es el major?</p>
+  <div id="p42ex"></div><div class="progress-line" id="p42pg"></div>
+  <button class="new-btn" onclick="g42()">Exercicis nous</button>
+</div>
+<div class="panel" data-group="4-2" data-panel="cl">
+  <div id="p42cl"></div><div class="progress-line" id="p42clpg"></div>
+</div>`;
+window.IL_4_2=function(){g42();g42cl();};
+window.g42=function(){
+  const st=[];
+  for(let i=0;i<8;i++){
+    const base=Math.floor(Math.random()*10);
+    const a=base+(Math.floor(Math.random()*99)+1)/100;
+    let b;do{b=base+(Math.floor(Math.random()*99)+1)/100;}while(Math.abs(a-b)<0.001);
+    const af=a.toFixed(2).replace('.',','),bf=b.toFixed(2).replace('.',',');
+    st.push({a:af,b:bf,av:a,bv:b,ans:a>b,answered:false});
+  }
+  document.getElementById('p42ex').innerHTML=st.map((ex,i)=>`<div class="ex"><span class="ex-q">Quin es major: <b>${ex.a}</b> o <b>${ex.b}</b>?</span><div style="display:flex;gap:8px;"><button class="yn-btn" id="p42a${i}" onclick="a42(${i},'a')">${ex.a}</button><button class="yn-btn" id="p42b${i}" onclick="a42(${i},'b')">${ex.b}</button></div><span id="p42fb${i}"></span></div>`).join('');
+  document.getElementById('p42ex')._st=st;document.getElementById('p42pg').textContent='0 de '+st.length+' correctes';
+};
+window.a42=function(i,ch){
+  const st=document.getElementById('p42ex')._st;if(st[i].answered)return;
+  const ok=(ch==='a')===st[i].ans;
+  const ba=document.getElementById('p42a'+i),bb=document.getElementById('p42b'+i),fb=document.getElementById('p42fb'+i);
+  const cb=ch==='a'?ba:bb;
+  if(ok){cb.classList.add('yn-ok');fb.className='fb-ok';fb.textContent='Correcte!';st[i].answered=true;}
+  else{cb.classList.add('yn-wrong');fb.className='fb-wrong';fb.textContent='Torna-ho a provar';setTimeout(()=>{ba.className='yn-btn';bb.className='yn-btn';fb.textContent='';},700);}
+  document.getElementById('p42pg').textContent=st.filter(e=>e.answered).length+' de '+st.length+' correctes';
+};
+window.g42cl=function(){
+  buildExCL('p42cl','p42clpg',[
+    {text:'Dos atletes salten d\'alcada: la Nuria salta 1,73 m i en Sergi salta 1,79 m.',q:'Qui salta mes? (1=Nuria, 2=Sergi)',isFrac:false,ans:2,hint:'1,73 vs 1,79: 3 < 9'},
+    {text:'Al super, un iogurt pesa 0,125 kg i un altre pesa 0,130 kg.',q:'Quin es mes pesat? (1=primer, 2=segon)',isFrac:false,ans:2,hint:'125 < 130'},
+    {text:'Tres cordes mesuren 2,5 m, 2,50 m i 2,500 m.',q:'Quantes cordes tenen la mateixa longitud?',isFrac:false,ans:3,hint:'2,5 = 2,50 = 2,500'},
+    {text:'La gasolina costa 1,879 euros/litre en una benzinera i 1,869 en una altra.',q:'Quina benzinera es mes barata? (1=primera, 2=segona)',isFrac:false,ans:2,hint:'1,879 vs 1,869: 7 < 9'},
+  ]);
+};
+
+LESSONS['4-3']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="4-3" data-tab="e" onclick="showTab('e','4-3')">Explicació</button>
+  <button class="tab" data-group="4-3" data-tab="x" onclick="showTab('x','4-3')">Exercicis</button>
+  <button class="tab" data-group="4-3" data-tab="cl" onclick="showTab('cl','4-3')">Problemes</button>
+</div>
+<div class="panel active" data-group="4-3" data-panel="e">
+  <div class="card"><div class="card-title">Arrodoniment</div>
+    <div style="font-size:14px;color:var(--text2);line-height:2;">Mira la xifra SEGUENT a la posicio on vols arrodonir:<br>Si >= 5 -> puja 1. Si &lt; 5 -> no canvia.</div>
+    <div class="card" style="margin-top:10px;"><div class="card-title">Exemples</div>
+      <div style="font-size:14px;color:var(--text2);line-height:2.2;">3,748 a les decimes -> xifra seg. 4 &lt; 5 -> <b>3,7</b><br>3,748 a les centesimes -> xifra seg. 8 >= 5 -> <b>3,75</b><br>5,965 a les decimes -> xifra seg. 6 >= 5 -> <b>6,0</b></div>
+    </div>
+    <div class="tip">Truncar = tallar sense mirar: 3,748 -> decimes -> 3,7 (igual pero sense regla)</div>
+  </div>
+</div>
+<div class="panel" data-group="4-3" data-panel="x">
+  <div id="p43ex"></div><div class="progress-line" id="p43pg"></div>
+  <button class="new-btn" onclick="g43()">Exercicis nous</button>
+</div>
+<div class="panel" data-group="4-3" data-panel="cl">
+  <div id="p43cl"></div><div class="progress-line" id="p43clpg"></div>
+</div>`;
+window.IL_4_3=function(){g43();g43cl();};
+window.g43=function(){
+  const items=[];
+  for(let k=0;k<8;k++){
+    const ent=Math.floor(Math.random()*9)+1;
+    const dec1=Math.floor(Math.random()*10);
+    const dec2=Math.floor(Math.random()*10);
+    const dec3=Math.floor(Math.random()*10);
+    const n=ent+dec1/10+dec2/100+dec3/1000;
+    const nStr=n.toFixed(3).replace('.',',');
+    if(k<4){
+      const ans=Math.round(n*10)/10;
+      items.push({q:'Arrodoneix '+nStr+' a les decimes',ans,hint:'Mira la 2a xifra decimal: '+dec2});
+    } else {
+      const ans=Math.round(n*100)/100;
+      items.push({q:'Arrodoneix '+nStr+' a les centesimes',ans,hint:'Mira la 3a xifra decimal: '+dec3});
+    }
+  }
+  buildExDec('p43ex','p43pg',items.slice(0,6));
+};
+window.g43cl=function(){
+  buildExCL('p43cl','p43clpg',[
+    {text:'En una cursa, el temps d\'un corredor es 12,347 segons. El jutge l\'arrodoneix a les decimes.',q:'Quin temps anota? (escriu x10, ex 123 = 12,3)',isFrac:false,ans:123,hint:'12,347 -> xifra seg 4 < 5 -> 12,3 -> x10=123'},
+    {text:'Un tros de fusta mesura 3,865 metres. El fuster l\'arrodoneix a les centesimes.',q:'Quant mesura arrodonit? (escriu x100, ex 387 = 3,87)',isFrac:false,ans:387,hint:'3,865 -> xifra seg 5 >= 5 -> 3,87 -> x100=387'},
+    {text:'El preu exacte d\'un article es 7,496 euros. La caixera arrodoneix al centim.',q:'Quants centims paga? (ex 750 = 7,50 euros)',isFrac:false,ans:750,hint:'7,496 -> xifra seg 6 >= 5 -> 7,50 -> 750 centims'},
+    {text:'La temperatura es 36,847 graus. El metge l\'arrodoneix a les decimes.',q:'Quina temperatura anota? (escriu x10, ex 368 = 36,8)',isFrac:false,ans:368,hint:'36,847 -> xifra seg 4 < 5 -> 36,8 -> x10=368'},
+  ]);
+};
+
+LESSONS['4-4']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="4-4" data-tab="e" onclick="showTab('e','4-4')">Regla de la coma</button>
+  <button class="tab" data-group="4-4" data-tab="x" onclick="showTab('x','4-4')">Exercicis</button>
+  <button class="tab" data-group="4-4" data-tab="cl" onclick="showTab('cl','4-4')">Problemes</button>
+</div>
+<div class="panel active" data-group="4-4" data-panel="e">
+  <div class="card"><div class="card-title">Multiplicar i dividir per 10, 100, 1000</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+      <div style="padding:14px;background:#dcfce7;border-radius:12px;"><div style="font-weight:700;color:#16a34a;margin-bottom:10px;">x 10, 100, 1000</div><div style="font-size:14px;color:var(--text2);line-height:2;">Mou la coma a la DRETA<br>x10 -> 1 lloc<br>x100 -> 2 llocs<br>x1000 -> 3 llocs</div><div style="margin-top:8px;font-size:14px;">3,75 x 100 = <b>375</b></div></div>
+      <div style="padding:14px;background:#fee2e2;border-radius:12px;"><div style="font-weight:700;color:#ef4444;margin-bottom:10px;">/ 10, 100, 1000</div><div style="font-size:14px;color:var(--text2);line-height:2;">Mou la coma a l'ESQUERRA<br>/10 -> 1 lloc<br>/100 -> 2 llocs<br>/1000 -> 3 llocs</div><div style="margin-top:8px;font-size:14px;">375 / 100 = <b>3,75</b></div></div>
+    </div>
+    <div class="tip">Si no hi ha prou xifres, afegeix zeros: 3,5 x 100 = 350</div>
+  </div>
+</div>
+<div class="panel" data-group="4-4" data-panel="x">
+  <div id="p44ex"></div><div class="progress-line" id="p44pg"></div>
+  <button class="new-btn" onclick="g44()">Exercicis nous</button>
+</div>
+<div class="panel" data-group="4-4" data-panel="cl">
+  <div id="p44cl"></div><div class="progress-line" id="p44clpg"></div>
+</div>`;
+window.IL_4_4=function(){g44();g44cl();};
+window.g44=function(){
+  const bases=[1.5,2.3,0.75,3.25,0.08,4.5,1.25,0.6,7.8,0.125];
+  const mults=[10,100,1000];
+  const items=[];
+  for(let i=0;i<8;i++){
+    const b=bases[Math.floor(Math.random()*bases.length)];
+    const m=mults[Math.floor(Math.random()*mults.length)];
+    if(Math.random()<0.5)items.push({q:b.toString().replace('.',',')+' x '+m,ans:round2(b*m),hint:'Mou la coma '+Math.log10(m)+' lloc(s) a la dreta'});
+    else items.push({q:round2(b*m).toString().replace('.',',')+' / '+m,ans:round2(b),hint:'Mou la coma '+Math.log10(m)+' lloc(s) a l\'esquerra'});
+  }
+  buildExDec('p44ex','p44pg',items.slice(0,7));
+};
+window.g44cl=function(){
+  buildExCL('p44cl','p44clpg',[
+    {text:'Un atleta corre 100 metres en 11,43 segons. Quants millisegons (x1000) tarda?',q:'Quants millisegons?',isFrac:false,ans:11430,ph:'núm enter',fmt:'Escriu el número enter (sense decimals)',hint:'11,43 x 1000 = 11430'},
+    {text:'Una caixa pesa 2,75 kg. Volem saber el pes en grams (x1000).',q:'Quants grams pesa?',isFrac:false,ans:2750,ph:'núm enter',fmt:'Escriu el número enter',hint:'2,75 x 1000 = 2750 g'},
+    {text:'Una tela mesura 350 cm. Per passar-la a metres, la dividim entre 100.',q:'Quants metres mesura?',isFrac:false,ans:3.5,ph:'ex: 3,5',fmt:'Escriu el decimal (coma o punt)',hint:'350 / 100 = 3,5'},
+    {text:'Un medicament te 0,5 grams de principi actiu per pastilla. Quants mil·ligrams son (x1000)?',q:'Quants milligrams?',isFrac:false,ans:500,ph:'núm enter',fmt:'Escriu el número enter',hint:'0,5 x 1000 = 500 mg'},
+  ]);
+};
+
+LESSONS['4-5']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="4-5" data-tab="e" onclick="showTab('e','4-5')">Metode</button>
+  <button class="tab" data-group="4-5" data-tab="x" onclick="showTab('x','4-5')">Exercicis</button>
+  <button class="tab" data-group="4-5" data-tab="cl" onclick="showTab('cl','4-5')">Problemes</button>
+</div>
+<div class="panel active" data-group="4-5" data-panel="e">
+  <div class="card"><div class="card-title">Suma i resta de decimals</div>
+    <div class="formula-box" style="font-size:1rem;">Alinea les comes i opera normalment</div>
+    <div style="font-family:monospace;font-size:15px;background:var(--surface2);padding:14px;border-radius:10px;margin:10px 0;">&nbsp;&nbsp;3,75<br>+&nbsp;1,40<br>------<br>&nbsp;&nbsp;5,15</div>
+    <div class="tip">Afegeix zeros per igualar el nombre de decimals.</div>
+  </div>
+  <div class="card"><div class="card-title">Multiplicacio de decimals</div>
+    <div style="font-size:14px;color:var(--text2);line-height:2;">1. Multiplica ignorant les comes.<br>2. Compta total xifres decimals dels dos factors.<br>3. Posa la coma al resultat.</div>
+    <div style="font-family:monospace;font-size:14px;background:var(--surface2);padding:12px;border-radius:10px;margin:10px 0;">1,3 x 2,4 = ?<br>13 x 24 = 312<br>decimals: 1+1 = 2<br>resultat: <b>3,12</b></div>
+  </div>
+</div>
+<div class="panel" data-group="4-5" data-panel="x">
+  <div id="p45ex"></div><div class="progress-line" id="p45pg"></div>
+  <button class="new-btn" onclick="g45()">Exercicis nous</button>
+</div>
+<div class="panel" data-group="4-5" data-panel="cl">
+  <div id="p45cl"></div><div class="progress-line" id="p45clpg"></div>
+</div>`;
+window.IL_4_5=function(){g45();g45cl();};
+window.g45=function(){
+  const items=[];
+  for(let i=0;i<5;i++){
+    const a=Math.floor(Math.random()*90)/10+1;
+    const b=Math.floor(Math.random()*90)/10+1;
+    const op=Math.random()<0.5?'+':'-';
+    const big=Math.max(a,b),small=Math.min(a,b);
+    const ans=round2(op==='+'?a+b:big-small);
+    items.push({q:big.toFixed(1).replace('.',',')+' '+op+' '+small.toFixed(1).replace('.',','),ans,hint:'Alinea les comes'});
+  }
+  for(let i=0;i<4;i++){
+    const a=Math.floor(Math.random()*9)+1+(Math.floor(Math.random()*9))/10;
+    const b=Math.floor(Math.random()*5)+1+(Math.floor(Math.random()*9))/10;
+    items.push({q:a.toFixed(1).replace('.',',')+' x '+b.toFixed(1).replace('.',','),ans:round2(a*b),hint:'Multiplica enters, despres posa 2 decimals'});
+  }
+  buildExDec('p45ex','p45pg',shuffle(items).slice(0,7));
+};
+window.g45cl=function(){
+  buildExCL('p45cl','p45clpg',[
+    {text:'Al mercat, la fruita costa 1,35 euros el kg i la verdura 0,90 euros. La mare compra 1 kg de cada.',q:'Quant paga en total? (x100, ex 225 = 2,25 euros)',isFrac:false,ans:225,hint:'1,35 + 0,90 = 2,25 -> 225'},
+    {text:'Un rectangle mesura 3,5 cm d\'ample i 2,4 cm de llarg.',q:'Quina es l\'area? (x100, ex 840 = 8,40)',isFrac:false,ans:840,hint:'3,5 x 2,4 = 8,40 -> 840'},
+    {text:'En Toni tenia 15,50 euros i ha gastat 8,75 euros en un llibre.',q:'Quant li queda? (x100, ex 675 = 6,75 euros)',isFrac:false,ans:675,hint:'15,50 - 8,75 = 6,75 -> 675'},
+    {text:'Una cinta mesura 3,5 metres. Es tallen 3 trossos de 0,75 m cadascun.',q:'Quant de cinta sobra? (x100, ex 125 = 1,25 m)',isFrac:false,ans:125,hint:'3x0,75=2,25. 3,5-2,25=1,25 -> 125'},
+  ]);
+};
+
+LESSONS['4-6']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="4-6" data-tab="e" onclick="showTab('e','4-6')">Metode</button>
+  <button class="tab" data-group="4-6" data-tab="x" onclick="showTab('x','4-6')">Exercicis</button>
+  <button class="tab" data-group="4-6" data-tab="cl" onclick="showTab('cl','4-6')">Problemes</button>
+</div>
+<div class="panel active" data-group="4-6" data-panel="e">
+  <div class="card"><div class="card-title">Divisio de nombres decimals</div>
+    <div style="font-size:14px;color:var(--text2);margin-bottom:10px;">Multiplica dividende i divisor per la potencia de 10 adequada per eliminar decimals al divisor.</div>
+    <div class="card"><div class="card-title">Exemple: 6,4 / 0,8</div>
+      <div style="font-size:14px;line-height:2;color:var(--text2);">Multiplica x10:<br>6,4 x 10 = 64<br>0,8 x 10 = 8<br>64 / 8 = <b>8</b></div>
+    </div>
+    <div class="card"><div class="card-title">Exemple: 3,75 / 0,25</div>
+      <div style="font-size:14px;line-height:2;color:var(--text2);">Multiplica x100:<br>375 / 25 = <b>15</b></div>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="4-6" data-panel="x">
+  <div id="p46ex"></div><div class="progress-line" id="p46pg"></div>
+  <button class="new-btn" onclick="g46()">Exercicis nous</button>
+</div>
+<div class="panel" data-group="4-6" data-panel="cl">
+  <div id="p46cl"></div><div class="progress-line" id="p46clpg"></div>
+</div>`;
+window.IL_4_6=function(){g46();g46cl();};
+window.g46=function(){
+  buildExDec('p46ex','p46pg',shuffle([
+    {q:'6,4 / 0,8',ans:8},{q:'3,6 / 0,4',ans:9},{q:'7,5 / 2,5',ans:3},
+    {q:'4,8 / 1,2',ans:4},{q:'9,6 / 3,2',ans:3},{q:'0,72 / 0,09',ans:8},
+    {q:'1,44 / 0,12',ans:12},{q:'3,5 / 0,5',ans:7},{q:'8,1 / 2,7',ans:3},
+    {q:'6,3 / 0,7',ans:9},{q:'4,5 / 1,5',ans:3},{q:'0,56 / 0,08',ans:7},
+  ]).slice(0,7));
+};
+window.g46cl=function(){
+  buildExCL('p46cl','p46clpg',[
+    {text:'Una corda de 7,5 metres es talla en trossos de 0,5 metres cadascun.',q:'Quants trossos surten?',isFrac:false,ans:15,hint:'7,5 / 0,5 = 15'},
+    {text:'Un sac de farina de 4,8 kg es reparteix en bosses de 0,6 kg.',q:'Quantes bosses surten?',isFrac:false,ans:8,hint:'4,8 / 0,6 = 8'},
+    {text:'La Marta te 3,6 metres de cinta i la talla en trossos de 1,2 metres.',q:'Quants trossos pot tallar?',isFrac:false,ans:3,hint:'3,6 / 1,2 = 3'},
+    {text:'Un dipòsit de 9,6 litres s\'omple amb ampolles de 0,8 litres.',q:'Quantes ampolles calen?',isFrac:false,ans:12,hint:'9,6 / 0,8 = 12'},
+  ]);
+};
+
+LESSONS['4-7']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="4-7" data-tab="e" onclick="showTab('e','4-7')">Metode</button>
+  <button class="tab" data-group="4-7" data-tab="x" onclick="showTab('x','4-7')">Exercicis</button>
+  <button class="tab" data-group="4-7" data-tab="cl" onclick="showTab('cl','4-7')">Problemes</button>
+</div>
+<div class="panel active" data-group="4-7" data-panel="e">
+  <div class="card"><div class="card-title">Fraccio -> nombre decimal</div>
+    <div class="formula-box">a/b = a / b</div>
+    <div style="font-size:14px;color:var(--text2);line-height:2.2;margin:8px 0;">3/4 = 3 / 4 = <b>0,75</b><br>1/3 = 1 / 3 = <b>0,333...</b> (periodic)<br>5/8 = 5 / 8 = <b>0,625</b></div>
+    <div class="tip">Fraccions amb denominador que nomes te factors 2 i 5 -> decimal exacte.</div>
+  </div>
+</div>
+<div class="panel" data-group="4-7" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Converteix a decimal (usa coma o punt).</p>
+  <div id="p47ex"></div><div class="progress-line" id="p47pg"></div>
+  <button class="new-btn" onclick="g47()">Exercicis nous</button>
+</div>
+<div class="panel" data-group="4-7" data-panel="cl">
+  <div id="p47cl"></div><div class="progress-line" id="p47clpg"></div>
+</div>`;
+window.IL_4_7=function(){g47();g47cl();};
+window.g47=function(){
+  buildExDec('p47ex','p47pg',shuffle([
+    {q:'1/2',ans:0.5},{q:'1/4',ans:0.25},{q:'3/4',ans:0.75},{q:'1/5',ans:0.2},
+    {q:'2/5',ans:0.4},{q:'3/5',ans:0.6},{q:'4/5',ans:0.8},{q:'1/8',ans:0.125},
+    {q:'3/8',ans:0.375},{q:'5/8',ans:0.625},{q:'7/8',ans:0.875},
+    {q:'3/10',ans:0.3},{q:'7/10',ans:0.7},{q:'1/20',ans:0.05},
+  ]).slice(0,7));
+};
+window.g47cl=function(){
+  buildExCL('p47cl','p47clpg',[
+    {text:'La Joana encerta 3 de cada 4 preguntes. Vol saber la puntuacio com a decimal.',q:'Quin decimal es 3/4? (x100, ex 75 = 0,75)',isFrac:false,ans:75,hint:'3/4=0,75 -> 75'},
+    {text:'Una recepta usa 1/8 de litre de llet.',q:'Quant es 1/8 en decimal? (x1000, ex 125 = 0,125)',isFrac:false,ans:125,hint:'1/8=0,125 -> 125'},
+    {text:'Un equip guanya 2 de cada 5 partits.',q:'Quin decimal es 2/5? (x10, ex 4 = 0,4)',isFrac:false,ans:4,hint:'2/5=0,4 -> x10=4'},
+    {text:'En Roc menja 5 trossos d\'una pizza tallada en 8.',q:'Quina fraccio menja convertida a decimal? (x1000)',isFrac:false,ans:625,hint:'5/8=0,625 -> 625'},
+  ]);
+};
+
+LESSONS['4-8']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="4-8" data-tab="e" onclick="showTab('e','4-8')">Classificacio</button>
+  <button class="tab" data-group="4-8" data-tab="x" onclick="showTab('x','4-8')">Exercicis</button>
+  <button class="tab" data-group="4-8" data-tab="cl" onclick="showTab('cl','4-8')">Problemes</button>
+</div>
+<div class="panel active" data-group="4-8" data-panel="e">
+  <div class="card"><div class="card-title">Tipus de nombres decimals</div>
+    <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-top:8px;">
+      <div style="padding:14px;background:#eef1ff;border-radius:12px;"><div style="font-weight:700;color:#4f6ef7;font-size:15px;margin-bottom:6px;">DECIMAL EXACTE</div><div style="font-size:14px;color:var(--text2);">Nombre finit de xifres decimals.<br>Exemples: 0,5 | 1,75 | 3,125</div></div>
+      <div style="padding:14px;background:#fef3c7;border-radius:12px;"><div style="font-weight:700;color:#d97706;font-size:15px;margin-bottom:6px;">PERIODIC PUR</div><div style="font-size:14px;color:var(--text2);">La repeticio comenca just despres de la coma.<br>Exemples: 0,3333... | 0,272727...</div></div>
+      <div style="padding:14px;background:#fee2e2;border-radius:12px;"><div style="font-weight:700;color:#ef4444;font-size:15px;margin-bottom:6px;">PERIODIC MIXT</div><div style="font-size:14px;color:var(--text2);">Primer xifres no periodiques, despres les periodiques.<br>Exemples: 0,1666... | 0,08333...</div></div>
+    </div>
+    <div class="tip">Tots els decimals periodics es poden escriure com a fraccions.</div>
+  </div>
+</div>
+<div class="panel" data-group="4-8" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Classifica: 1=exacte, 2=periodic pur, 3=periodic mixt</p>
+  <div id="p48ex"></div><div class="progress-line" id="p48pg"></div>
+  <button class="new-btn" onclick="g48()">Exercicis nous</button>
+</div>
+<div class="panel" data-group="4-8" data-panel="cl">
+  <div id="p48cl"></div><div class="progress-line" id="p48clpg"></div>
+</div>`;
+window.IL_4_8=function(){g48();g48cl();};
+window.g48=function(){
+  buildExNum('p48ex','p48pg',shuffle([
+    {q:'0,75 -> tipus (1, 2 o 3)',ans:1},{q:'0,3333... -> tipus',ans:2},{q:'0,1666... -> tipus',ans:3},
+    {q:'1,25 -> tipus',ans:1},{q:'0,272727... -> tipus',ans:2},{q:'0,08333... -> tipus',ans:3},
+    {q:'0,5 -> tipus',ans:1},{q:'0,090909... -> tipus',ans:2},{q:'0,41666... -> tipus',ans:3},
+    {q:'3,125 -> tipus',ans:1},{q:'0,142857... -> tipus',ans:2},{q:'0,5833... -> tipus',ans:3},
+  ]).slice(0,8));
+};
+window.g48cl=function(){
+  buildExCL('p48cl','p48clpg',[
+    {text:'La fraccio 1/3 = 0,3333... El 3 es repeteix des de la primera xifra decimal.',q:'Quin tipus de decimal es?',isFrac:false,ans:2,ph:'1, 2 o 3',fmt:'1=exacte | 2=periodic pur | 3=periodic mixt',hint:'Repeticio des de la 1a xifra -> periodic pur (2)'},
+    {text:'La fraccio 1/6 = 0,1666... El 6 es repeteix pero primer hi ha el digit 1 que no es repeteix.',q:'Quin tipus es?',isFrac:false,ans:3,ph:'1, 2 o 3',fmt:'1=exacte | 2=periodic pur | 3=periodic mixt',hint:'Primer 1 no periodic, despres 6 periodic -> periodic mixt (3)'},
+    {text:'La fraccio 3/8 = 0,375. Les xifres acaben i no es repeteix cap grup.',q:'Quin tipus es?',isFrac:false,ans:1,ph:'1, 2 o 3',fmt:'1=exacte | 2=periodic pur | 3=periodic mixt',hint:'Nombre finit de xifres -> exacte (1)'},
+    {text:'El numero 0,272727... te el grup 27 repetint-se des del principi, sense cap xifra previa diferent.',q:'Quin tipus es?',isFrac:false,ans:2,ph:'1, 2 o 3',fmt:'1=exacte | 2=periodic pur | 3=periodic mixt',hint:'Repeticio des de la 1a xifra -> periodic pur (2)'},
+  ]);
+};
+// ── UNITAT 5 — ÀLGEBRA ──────────────────────────────────────────
+
+LESSONS['5-1']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="5-1" data-tab="e" onclick="showTab('e','5-1')">Explicació</button>
+  <button class="tab" data-group="5-1" data-tab="x" onclick="showTab('x','5-1')">Exercicis</button>
+  <button class="tab" data-group="5-1" data-tab="cl" onclick="showTab('cl','5-1')">Problemes</button>
+</div>
+<div class="panel active" data-group="5-1" data-panel="e">
+  <div class="card"><div class="card-title">Què és una expressió algebraica?</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Combina números i lletres (variables) que representen valors desconeguts.</p>
+    <svg viewBox="0 0 480 110" style="width:100%;max-width:480px;display:block;margin:0 auto 14px;">
+      <rect x="10" y="10" width="460" height="90" rx="14" fill="#eef1ff"/>
+      <text x="240" y="60" text-anchor="middle" font-family="Nunito,sans-serif" font-size="36" font-weight="900" fill="#1a1f3a">3x²</text>
+      <text x="290" y="60" text-anchor="middle" font-family="Nunito,sans-serif" font-size="36" font-weight="900" fill="#5a6180"> + </text>
+      <text x="345" y="60" text-anchor="middle" font-family="Nunito,sans-serif" font-size="36" font-weight="900" fill="#1a1f3a">5x</text>
+      <text x="395" y="60" text-anchor="middle" font-family="Nunito,sans-serif" font-size="36" font-weight="900" fill="#5a6180"> − </text>
+      <text x="445" y="60" text-anchor="middle" font-family="Nunito,sans-serif" font-size="36" font-weight="900" fill="#1a1f3a">2</text>
+      <text x="118" y="30" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#4f6ef7" font-weight="700">COEFICIENT</text>
+      <text x="118" y="45" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#ef4444" font-weight="700">BASE  EXP</text>
+      <line x1="118" y1="50" x2="200" y2="58" stroke="#4f6ef7" stroke-width="1.5" stroke-dasharray="3"/>
+      <text x="240" y="95" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#16a34a" font-weight="700">3 termes</text>
+      <text x="50" y="60" text-anchor="middle" font-family="Nunito,sans-serif" font-size="22" font-weight="900" fill="#4f6ef7">3</text>
+      <text x="72" y="52" text-anchor="middle" font-family="Nunito,sans-serif" font-size="22" font-weight="900" fill="#d97706">x</text>
+      <text x="84" y="46" text-anchor="middle" font-family="Nunito,sans-serif" font-size="14" font-weight="900" fill="#ef4444">2</text>
+    </svg>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+      <div style="padding:10px;background:#eef1ff;border-radius:10px;text-align:center;"><div style="font-weight:800;color:#4f6ef7;font-size:13px;">COEFICIENT</div><div style="font-size:12px;color:var(--text2);margin-top:4px;">El número que multiplica la variable (3 en 3x)</div></div>
+      <div style="padding:10px;background:#fef3c7;border-radius:10px;text-align:center;"><div style="font-weight:800;color:#d97706;font-size:13px;">VARIABLE</div><div style="font-size:12px;color:var(--text2);margin-top:4px;">La lletra (x, y, a…) valor desconegut</div></div>
+      <div style="padding:10px;background:#fee2e2;border-radius:10px;text-align:center;"><div style="font-weight:800;color:#ef4444;font-size:13px;">TERME INDEPENDENT</div><div style="font-size:12px;color:var(--text2);margin-top:4px;">Número sol, sense variable (el −2)</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-title">Valor numèric d'una expressió</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Substitueix la variable pel valor donat i calcula.</p>
+    <div style="background:var(--surface2);border-radius:10px;padding:14px;font-size:14px;color:var(--text2);line-height:2.2;">
+      Si x = 3, calcula 2x + 5:<br>
+      2 · <b style="color:#4f6ef7;">3</b> + 5 = 6 + 5 = <b>11</b>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="5-1" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Calcula el valor numèric substituint la variable.</p>
+  <div id="p51ex"></div><div class="progress-line" id="p51pg"></div>
+  <button class="new-btn" onclick="g51()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="5-1" data-panel="cl">
+  <div id="p51cl"></div><div class="progress-line" id="p51clpg"></div>
+</div>`;
+window.IL_5_1=function(){g51();g51cl();};
+window.g51=function(){
+  const exprs=[
+    {q:'2x + 3, si x = 4',fn:x=>2*x+3},{q:'3x − 1, si x = 5',fn:x=>3*x-1},
+    {q:'x² + 2, si x = 3',fn:x=>x*x+2},{q:'4x + x, si x = 2',fn:x=>5*x},
+    {q:'2x² − 3, si x = 2',fn:x=>2*x*x-3},{q:'5x − 2x, si x = 6',fn:x=>3*x},
+    {q:'x² + x, si x = 4',fn:x=>x*x+x},{q:'3x + 7, si x = 0',fn:x=>3*x+7},
+    {q:'x² − x + 1, si x = 3',fn:x=>x*x-x+1},{q:'2x² + x, si x = 2',fn:x=>2*x*x+x},
+  ];
+  const xVals=[1,2,3,4,5];
+  buildExNum('p51ex','p51pg',shuffle(exprs).slice(0,7).map(e=>{const xv=xVals[Math.floor(Math.random()*xVals.length)];const qFixed=e.q.replace(/si x = \d+/,'si x = '+xv);return{q:qFixed,ans:e.fn(xv),hint:'Substitueix x per '+xv};}));
+};
+window.g51cl=function(){
+  buildExCL('p51cl','p51clpg',[
+    {text:'Una cistella de fruita té x pomes i 3 taronges més que pomes. En total, les taronges són x + 3.',q:'Si x = 5, quantes taronges hi ha?',isFrac:false,ans:8,ph:'núm enter',fmt:'Escriu el número',hint:'x + 3 = 5 + 3 = 8'},
+    {text:'El perímetre d\'un quadrat de costat x és 4x.',q:'Si x = 7, quin és el perímetre?',isFrac:false,ans:28,ph:'núm enter',fmt:'Escriu el número',hint:'4 × 7 = 28'},
+    {text:'En una tienda, cada llapis costa 2 euros. Si en compres x, pagues 2x euros.',q:'Si x = 6, quant pagues?',isFrac:false,ans:12,ph:'núm enter',fmt:'Escriu euros',hint:'2 × 6 = 12'},
+    {text:'L\'àrea d\'un rectangle de base x i altura 5 és 5x.',q:'Si x = 4, quina és l\'àrea?',isFrac:false,ans:20,ph:'núm enter',fmt:'Escriu el número',hint:'5 × 4 = 20'},
+  ]);
+};
+
+LESSONS['5-2']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="5-2" data-tab="e" onclick="showTab('e','5-2')">Explicació</button>
+  <button class="tab" data-group="5-2" data-tab="x" onclick="showTab('x','5-2')">Exercicis</button>
+  <button class="tab" data-group="5-2" data-tab="cl" onclick="showTab('cl','5-2')">Problemes</button>
+</div>
+<div class="panel active" data-group="5-2" data-panel="e">
+  <div class="card"><div class="card-title">Monomis</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:12px;">Un monomi és una expressió algebraica d'un sol terme: coeficient × variable(s).</p>
+    <svg viewBox="0 0 440 80" style="width:100%;max-width:440px;display:block;margin:0 auto 14px;">
+      <rect x="5" y="5" width="430" height="70" rx="12" fill="#f7f9ff" stroke="#e2e8f8" stroke-width="1.5"/>
+      <text x="80" y="48" text-anchor="middle" font-family="Nunito,sans-serif" font-size="30" font-weight="900" fill="#4f6ef7">−4</text>
+      <text x="130" y="48" text-anchor="middle" font-family="Nunito,sans-serif" font-size="30" font-weight="900" fill="#d97706">x</text>
+      <text x="148" y="36" text-anchor="middle" font-family="Nunito,sans-serif" font-size="16" font-weight="900" fill="#ef4444">3</text>
+      <text x="80" y="68" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#4f6ef7" font-weight="700">coeficient</text>
+      <text x="135" y="68" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#d97706" font-weight="700">base</text>
+      <text x="155" y="68" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#ef4444" font-weight="700">exp</text>
+      <line x1="220" y1="15" x2="220" y2="65" stroke="#e2e8f8" stroke-width="1.5"/>
+      <text x="330" y="30" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="#5a6180">Grau = exponent = <tspan font-weight="800" fill="#ef4444">3</tspan></text>
+      <text x="330" y="50" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="#5a6180">Coef = <tspan font-weight="800" fill="#4f6ef7">−4</tspan></text>
+    </svg>
+    <div class="card"><div class="card-title">Suma i resta de monomis semblants</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:8px;">Només es poden sumar/restar monomis amb la <b>mateixa variable i el mateix grau</b>.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:10px;background:#dcfce7;border-radius:10px;"><div style="font-weight:700;color:#16a34a;font-size:12px;margin-bottom:4px;">✓ SEMBLANTS (es poden operar)</div><div style="font-size:14px;">3x + 5x = <b>8x</b><br>7x² − 2x² = <b>5x²</b></div></div>
+        <div style="padding:10px;background:#fee2e2;border-radius:10px;"><div style="font-weight:700;color:#ef4444;font-size:12px;margin-bottom:4px;">✗ NO SEMBLANTS (no es poden)</div><div style="font-size:14px;">3x + 5x² → no es pot<br>4x − 2y → no es pot</div></div>
+      </div>
+    </div>
+    <div class="tip">Per multiplicar monomis: multiplica coeficients i suma exponents de la mateixa variable.<br>3x² × 2x³ = 6x⁵</div>
+  </div>
+</div>
+<div class="panel" data-group="5-2" data-panel="x">
+  <div id="p52ex"></div><div class="progress-line" id="p52pg"></div>
+  <button class="new-btn" onclick="g52()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="5-2" data-panel="cl">
+  <div id="p52cl"></div><div class="progress-line" id="p52clpg"></div>
+</div>`;
+window.IL_5_2=function(){g52();g52cl();};
+window.g52=function(){
+  const pool=[
+    {q:'3x + 5x',ans:8,suf:'x'},{q:'7x − 2x',ans:5,suf:'x'},{q:'4x² + 3x²',ans:7,suf:'x²'},
+    {q:'9x² − 4x²',ans:5,suf:'x²'},{q:'2x + 8x',ans:10,suf:'x'},{q:'6x − x',ans:5,suf:'x'},
+    {q:'5x² + x²',ans:6,suf:'x²'},{q:'10x − 3x',ans:7,suf:'x'},{q:'4x² − 2x²',ans:2,suf:'x²'},
+  ];
+  const st=shuffle(pool).slice(0,7);
+  document.getElementById('p52ex').innerHTML=st.map((ex,i)=>`<div class="ex">
+    <span class="ex-q">${ex.q} =</span>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <input class="ex-inp" type="number" id="p52i${i}" placeholder="?" style="width:70px;" onkeydown="if(event.key==='Enter')ck52(${i})">
+      <span style="font-weight:700;color:var(--accent);">${ex.suf}</span>
+    </div>
+    <button class="check-btn" onclick="ck52(${i})">Comprova</button>
+    <span id="p52fb${i}"></span>
+  </div>`).join('');
+  document.getElementById('p52ex')._st=st;
+  document.getElementById('p52pg').textContent='0 de '+st.length+' correctes';
+};
+window.ck52=function(i){
+  const st=document.getElementById('p52ex')._st;if(st[i].answered)return;
+  const inp=document.getElementById('p52i'+i),fb=document.getElementById('p52fb'+i);
+  if(parseInt(inp.value)===st[i].ans){fb.className='fb-ok';fb.textContent='✓ Correcte!';inp.disabled=true;st[i].answered=true;}
+  else{fb.className='fb-wrong';fb.textContent='✗ Torna-ho a provar';inp.value='';inp.focus();}
+  document.getElementById('p52pg').textContent=st.filter(e=>e.answered).length+' de '+st.length+' correctes';
+};
+window.g52cl=function(){
+  buildExCL('p52cl','p52clpg',[
+    {text:'Tens 3 caixes amb x llapis cadascuna i en reps 5 caixes més. El total de caixes és 3x + 5x.',q:'Simplifica 3x + 5x. Quin és el coeficient?',isFrac:false,ans:8,ph:'núm enter',fmt:'Escriu el coeficient (el número davant de x)',hint:'3 + 5 = 8, resultat: 8x'},
+    {text:'Una granja té 7x² gallines en un corral i 2x² en un altre.',q:'Simplifica 7x² − 2x². Quin és el coeficient?',isFrac:false,ans:5,ph:'núm enter',fmt:'Escriu el coeficient (el número davant de x²)',hint:'7 − 2 = 5, resultat: 5x²'},
+    {text:'En una expressió, 4x i 3x² són monomis. Podem sumar-los?',q:'Es poden sumar 4x i 3x²? (1=Sí, 0=No)',isFrac:false,ans:0,ph:'1 o 0',fmt:'Escriu 1 per Sí o 0 per No',hint:'Diferent grau (1 vs 2), no es poden sumar'},
+    {text:'Un rectangle té base 3x i alçada 4x.',q:'L\'àrea és 3x × 4x = ?x². Quin coeficient?',isFrac:false,ans:12,ph:'núm enter',fmt:'Escriu el coeficient de x²',hint:'3 × 4 = 12, exponents: 1+1=2, resultat: 12x²'},
+  ]);
+};
+
+LESSONS['5-3']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="5-3" data-tab="e" onclick="showTab('e','5-3')">Explicació</button>
+  <button class="tab" data-group="5-3" data-tab="x" onclick="showTab('x','5-3')">Exercicis</button>
+  <button class="tab" data-group="5-3" data-tab="cl" onclick="showTab('cl','5-3')">Problemes</button>
+</div>
+<div class="panel active" data-group="5-3" data-panel="e">
+  <div class="card"><div class="card-title">Polinomis</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:12px;">Un polinomi és una suma de monomis. Cada monomi és un <b>terme</b>.</p>
+    <svg viewBox="0 0 480 90" style="width:100%;max-width:480px;display:block;margin:0 auto 12px;">
+      <rect x="5" y="5" width="470" height="80" rx="12" fill="#f7f9ff" stroke="#e2e8f8" stroke-width="1.5"/>
+      <text x="60" y="52" text-anchor="middle" font-family="Nunito,sans-serif" font-size="26" font-weight="900" fill="#4f6ef7">2x²</text>
+      <text x="120" y="52" text-anchor="middle" font-family="Nunito,sans-serif" font-size="26" font-weight="900" fill="#5a6180">+</text>
+      <text x="185" y="52" text-anchor="middle" font-family="Nunito,sans-serif" font-size="26" font-weight="900" fill="#d97706">3x</text>
+      <text x="245" y="52" text-anchor="middle" font-family="Nunito,sans-serif" font-size="26" font-weight="900" fill="#5a6180">−</text>
+      <text x="300" y="52" text-anchor="middle" font-family="Nunito,sans-serif" font-size="26" font-weight="900" fill="#16a34a">7</text>
+      <text x="60" y="75" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#4f6ef7" font-weight="700">grau 2</text>
+      <text x="185" y="75" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#d97706" font-weight="700">grau 1</text>
+      <text x="300" y="75" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#16a34a" font-weight="700">terme ind.</text>
+      <text x="420" y="40" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#5a6180">Grau del</text>
+      <text x="420" y="55" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#5a6180">polinomi: <tspan font-weight="900" fill="#4f6ef7">2</tspan></text>
+    </svg>
+    <div class="card"><div class="card-title">Suma i resta de polinomis</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:8px;">Agrupa i opera els termes semblants (mateixa variable i grau).</p>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;font-size:14px;color:var(--text2);line-height:2.2;font-family:monospace;">
+        (3x² + 2x − 1) + (x² − 5x + 4)<br>
+        = (3+1)x² + (2−5)x + (−1+4)<br>
+        = <b>4x² − 3x + 3</b>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="5-3" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Suma els polinomis i escriu el coeficient demanat.</p>
+  <div id="p53ex"></div><div class="progress-line" id="p53pg"></div>
+  <button class="new-btn" onclick="g53()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="5-3" data-panel="cl">
+  <div id="p53cl"></div><div class="progress-line" id="p53clpg"></div>
+</div>`;
+window.IL_5_3=function(){g53();g53cl();};
+window.g53=function(){
+  const pool=[
+    {q:'(3x + 2) + (5x + 4). Coeficient de x?',ans:8,hint:'3+5=8'},
+    {q:'(7x − 3) + (2x + 1). Coeficient de x?',ans:9,hint:'7+2=9'},
+    {q:'(4x² + x) + (2x² + 3x). Coeficient de x²?',ans:6,hint:'4+2=6'},
+    {q:'(5x − 2) − (3x + 1). Coeficient de x?',ans:2,hint:'5−3=2'},
+    {q:'(8x + 4) − (3x − 2). Terme independent?',ans:6,hint:'4−(−2)=6'},
+    {q:'(x² + 3x) + (4x² − x). Coeficient de x²?',ans:5,hint:'1+4=5'},
+    {q:'(6x − 5) − (2x − 3). Coeficient de x?',ans:4,hint:'6−2=4'},
+    {q:'(3x + 1) + (3x − 1). Coeficient de x?',ans:6,hint:'3+3=6'},
+  ];
+  buildExNum('p53ex','p53pg',shuffle(pool).slice(0,6));
+};
+window.g53cl=function(){
+  buildExCL('p53cl','p53clpg',[
+    {text:'Una botiga ven dos productes. El benefici del primer és 5x + 3 euros i el del segon és 2x + 7 euros.',q:'Quin és el benefici total? Coeficient de x?',isFrac:false,ans:7,ph:'núm enter',fmt:'Escriu el coeficient de x',hint:'(5+2)x + (3+7) = 7x + 10'},
+    {text:'Un camp mesura (4x + 6) metres de llarg. Un altre mesura (2x − 2) metres.',q:'Si els sumem, quin és el coeficient de x?',isFrac:false,ans:6,ph:'núm enter',fmt:'Escriu el coeficient de x',hint:'4x + 2x = 6x'},
+    {text:'La diferència entre (8x + 5) i (3x + 2) és un nou polinomi.',q:'Quin és el terme independent de la diferència?',isFrac:false,ans:3,ph:'núm enter',fmt:'Escriu el terme independent',hint:'5 − 2 = 3'},
+    {text:'Dos polinomis: A = 2x² + 3x + 1 i B = x² + x + 4. Suma A + B.',q:'Quin és el terme independent de A + B?',isFrac:false,ans:5,ph:'núm enter',fmt:'Escriu el terme independent',hint:'1 + 4 = 5'},
+  ]);
+};
+
+LESSONS['5-4']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="5-4" data-tab="e" onclick="showTab('e','5-4')">Explicació</button>
+  <button class="tab" data-group="5-4" data-tab="x" onclick="showTab('x','5-4')">Exercicis</button>
+  <button class="tab" data-group="5-4" data-tab="cl" onclick="showTab('cl','5-4')">Problemes</button>
+</div>
+<div class="panel active" data-group="5-4" data-panel="e">
+  <div class="card"><div class="card-title">Què és una equació?</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Una equació és una igualtat on hi ha una incògnita. Busquem el valor que la fa certa.</p>
+    <svg viewBox="0 0 440 120" style="width:100%;max-width:440px;display:block;margin:0 auto 14px;">
+      <!-- Balança -->
+      <rect x="200" y="95" width="8" height="22" rx="3" fill="#5a6180"/>
+      <polygon points="204,95 170,95 238,95" fill="#5a6180"/>
+      <line x1="100" y1="60" x2="308" y2="60" stroke="#4f6ef7" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="204" cy="60" r="5" fill="#4f6ef7"/>
+      <!-- plat esquerre -->
+      <line x1="100" y1="60" x2="100" y2="90" stroke="#5a6180" stroke-width="2"/>
+      <rect x="65" y="90" width="70" height="22" rx="8" fill="#eef1ff" stroke="#4f6ef7" stroke-width="1.5"/>
+      <text x="100" y="106" text-anchor="middle" font-family="Nunito,sans-serif" font-size="16" font-weight="900" fill="#4f6ef7">2x + 3</text>
+      <!-- plat dret -->
+      <line x1="308" y1="60" x2="308" y2="90" stroke="#5a6180" stroke-width="2"/>
+      <rect x="275" y="90" width="66" height="22" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="308" y="106" text-anchor="middle" font-family="Nunito,sans-serif" font-size="16" font-weight="900" fill="#16a34a">11</text>
+      <!-- signe = -->
+      <text x="204" y="45" text-anchor="middle" font-family="Nunito,sans-serif" font-size="24" font-weight="900" fill="#ef4444">=</text>
+      <text x="100" y="30" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#5a6180">Membre esquerre</text>
+      <text x="308" y="30" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#5a6180">Membre dret</text>
+    </svg>
+    <div class="tip">La balança ha d'estar equilibrada: el que fas a un costat ho has de fer a l'altre.</div>
+  </div>
+</div>
+<div class="panel" data-group="5-4" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Quin valor de x fa certa l'equació?</p>
+  <div id="p54ex"></div><div class="progress-line" id="p54pg"></div>
+  <button class="new-btn" onclick="g54()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="5-4" data-panel="cl">
+  <div id="p54cl"></div><div class="progress-line" id="p54clpg"></div>
+</div>`;
+window.IL_5_4=function(){g54();g54cl();};
+window.g54=function(){
+  const items=[];
+  for(let i=0;i<8;i++){
+    const sol=Math.floor(Math.random()*10)+1;
+    const a=Math.floor(Math.random()*5)+1;
+    const b=Math.floor(Math.random()*8);
+    const rhs=a*sol+b;
+    items.push({q:`${a}x + ${b} = ${rhs}`,ans:sol,hint:`x = (${rhs} − ${b}) ÷ ${a}`});
+  }
+  buildExNum('p54ex','p54pg',items);
+};
+window.g54cl=function(){
+  buildExCL('p54cl','p54clpg',[
+    {text:'En Pau té x cromos i en rep 5 més. Ara en té 13. Equació: x + 5 = 13.',q:'Quants cromos tenia en Pau?',isFrac:false,ans:8,ph:'núm enter',fmt:'Escriu el número',hint:'x = 13 − 5 = 8'},
+    {text:'Una caixa té x boles. Treiem 3 boles i en queden 9. Equació: x − 3 = 9.',q:'Quantes boles hi havia?',isFrac:false,ans:12,ph:'núm enter',fmt:'Escriu el número',hint:'x = 9 + 3 = 12'},
+    {text:'El doble de l\'edat de la Laia és 24. Equació: 2x = 24.',q:'Quants anys té la Laia?',isFrac:false,ans:12,ph:'núm enter',fmt:'Escriu el número',hint:'x = 24 ÷ 2 = 12'},
+    {text:'Tres amics reparteixen x euros a parts iguals i a cadascú li toca 7 euros. Equació: x ÷ 3 = 7.',q:'Quants euros reparteixen en total?',isFrac:false,ans:21,ph:'núm enter',fmt:'Escriu el número',hint:'x = 7 × 3 = 21'},
+  ]);
+};
+
+LESSONS['5-5']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="5-5" data-tab="e" onclick="showTab('e','5-5')">Explicació</button>
+  <button class="tab" data-group="5-5" data-tab="x" onclick="showTab('x','5-5')">Exercicis</button>
+</div>
+<div class="panel active" data-group="5-5" data-panel="e">
+  <div class="card"><div class="card-title">Elements d'una equació</div>
+    <svg viewBox="0 0 460 140" style="width:100%;max-width:460px;display:block;margin:0 auto 14px;">
+      <rect x="5" y="5" width="450" height="130" rx="14" fill="#f7f9ff" stroke="#e2e8f8" stroke-width="1.5"/>
+      <!-- equació -->
+      <text x="230" y="65" text-anchor="middle" font-family="Nunito,sans-serif" font-size="32" font-weight="900" fill="#1a1f3a">3x + 5 = 14</text>
+      <!-- fletxes i etiquetes -->
+      <line x1="90" y1="70" x2="90" y2="105" stroke="#4f6ef7" stroke-width="1.5" stroke-dasharray="3"/>
+      <text x="90" y="118" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#4f6ef7" font-weight="700">incògnita</text>
+      <line x1="68" y1="70" x2="68" y2="90" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3"/>
+      <text x="50" y="103" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#d97706" font-weight="700">coef.</text>
+      <line x1="135" y1="70" x2="135" y2="90" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="3"/>
+      <text x="135" y="103" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#16a34a" font-weight="700">terme ind.</text>
+      <line x1="196" y1="55" x2="196" y2="30" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3"/>
+      <text x="196" y="22" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#ef4444" font-weight="700">signe =</text>
+      <line x1="340" y1="70" x2="340" y2="90" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3"/>
+      <text x="340" y="103" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#7c3aed" font-weight="700">2n membre</text>
+      <!-- membres -->
+      <rect x="20" y="72" width="160" height="6" rx="3" fill="#4f6ef7" opacity="0.2"/>
+      <rect x="205" y="72" width="145" height="6" rx="3" fill="#7c3aed" opacity="0.2"/>
+      <text x="100" y="130" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#4f6ef7" font-weight="700">1r membre</text>
+      <text x="278" y="130" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#7c3aed" font-weight="700">2n membre</text>
+    </svg>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="padding:10px;background:#eef1ff;border-radius:10px;"><div style="font-weight:700;color:#4f6ef7;font-size:12px;">INCÒGNITA</div><div style="font-size:12px;color:var(--text2);">La lletra que busquem (x)</div></div>
+      <div style="padding:10px;background:#dcfce7;border-radius:10px;"><div style="font-weight:700;color:#16a34a;font-size:12px;">SOLUCIÓ</div><div style="font-size:12px;color:var(--text2);">El valor que fa certa l'equació</div></div>
+      <div style="padding:10px;background:#fef3c7;border-radius:10px;"><div style="font-weight:700;color:#d97706;font-size:12px;">1r MEMBRE</div><div style="font-size:12px;color:var(--text2);">Part esquerra del = </div></div>
+      <div style="padding:10px;background:#f5f3ff;border-radius:10px;"><div style="font-weight:700;color:#7c3aed;font-size:12px;">2n MEMBRE</div><div style="font-size:12px;color:var(--text2);">Part dreta del =</div></div>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="5-5" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Comprova si el valor donat és solució de l'equació (1=Sí, 0=No)</p>
+  <div id="p55ex"></div><div class="progress-line" id="p55pg"></div>
+  <button class="new-btn" onclick="g55()">Exercicis nous ↺</button>
+</div>`;
+window.IL_5_5=function(){g55();};
+window.g55=function(){
+  const pool=[];
+  for(let i=0;i<10;i++){
+    const sol=Math.floor(Math.random()*8)+1;
+    const a=Math.floor(Math.random()*4)+1;
+    const b=Math.floor(Math.random()*6);
+    const rhs=a*sol+b;
+    const wrongSol=sol+(Math.random()<0.5?1:-1)*(Math.floor(Math.random()*3)+1);
+    const testSol=Math.random()<0.5?sol:wrongSol;
+    const isSol=(a*testSol+b===rhs);
+    pool.push({q:`És x=${testSol} solució de ${a}x + ${b} = ${rhs}? (comprova: ${a}·${testSol} + ${b} = ${a*testSol+b})`,ans:isSol?1:0,hint:`${a}×${testSol}+${b}=${a*testSol+b}. El resultat ${a*testSol+b===rhs?'és':'no és'} ${rhs}`});
+  }
+  buildExNum('p55ex','p55pg',shuffle(pool).slice(0,7));
+};
+
+LESSONS['5-6']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="5-6" data-tab="e" onclick="showTab('e','5-6')">Explicació</button>
+  <button class="tab" data-group="5-6" data-tab="x" onclick="showTab('x','5-6')">Exercicis</button>
+</div>
+<div class="panel active" data-group="5-6" data-panel="e">
+  <div class="card"><div class="card-title">Equacions equivalents</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:12px;">Dues equacions són equivalents si tenen la mateixa solució. Podem transformar-les sense canviar la solució si fem la mateixa operació als dos membres.</p>
+    <svg viewBox="0 0 460 160" style="width:100%;max-width:460px;display:block;margin:0 auto 14px;">
+      <!-- Pas 1 -->
+      <rect x="10" y="10" width="440" height="40" rx="10" fill="#eef1ff"/>
+      <text x="230" y="36" text-anchor="middle" font-family="Nunito,sans-serif" font-size="20" font-weight="900" fill="#1a1f3a">2x + 3 = 11</text>
+      <text x="10" y="26" font-family="Nunito,sans-serif" font-size="11" fill="#4f6ef7" font-weight="700">  Pas 1:</text>
+      <!-- fletxa avall -->
+      <line x1="230" y1="50" x2="230" y2="70" stroke="#5a6180" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="310" y="65" font-family="Nunito,sans-serif" font-size="11" fill="#16a34a" font-weight="700">− 3 als dos membres</text>
+      <!-- Pas 2 -->
+      <rect x="10" y="70" width="440" height="40" rx="10" fill="#dcfce7"/>
+      <text x="230" y="96" text-anchor="middle" font-family="Nunito,sans-serif" font-size="20" font-weight="900" fill="#1a1f3a">2x = 8</text>
+      <text x="10" y="86" font-family="Nunito,sans-serif" font-size="11" fill="#16a34a" font-weight="700">  Pas 2:</text>
+      <!-- fletxa avall -->
+      <line x1="230" y1="110" x2="230" y2="130" stroke="#5a6180" stroke-width="2"/>
+      <text x="310" y="125" font-family="Nunito,sans-serif" font-size="11" fill="#d97706" font-weight="700">÷ 2 als dos membres</text>
+      <!-- Solució -->
+      <rect x="10" y="130" width="440" height="25" rx="10" fill="#fef3c7"/>
+      <text x="230" y="147" text-anchor="middle" font-family="Nunito,sans-serif" font-size="18" font-weight="900" fill="#d97706">x = 4 ✓</text>
+    </svg>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="padding:10px;background:#dcfce7;border-radius:10px;"><div style="font-weight:700;color:#16a34a;font-size:12px;margin-bottom:4px;">✓ POTS fer (equivalents)</div><div style="font-size:12px;color:var(--text2);">Sumar/restar el mateix<br>Multiplicar/dividir ≠ 0</div></div>
+      <div style="padding:10px;background:#fee2e2;border-radius:10px;"><div style="font-weight:700;color:#ef4444;font-size:12px;margin-bottom:4px;">✗ NO pots fer</div><div style="font-size:12px;color:var(--text2);">Dividir entre 0<br>Operacions diferents a cada costat</div></div>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="5-6" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Quin és el pas següent equivalent? Escriu el valor que queda a la dreta del =</p>
+  <div id="p56ex"></div><div class="progress-line" id="p56pg"></div>
+  <button class="new-btn" onclick="g56()">Exercicis nous ↺</button>
+</div>`;
+window.IL_5_6=function(){g56();};
+window.g56=function(){
+  const pool=[];
+  for(let i=0;i<8;i++){
+    const sol=Math.floor(Math.random()*10)+2;
+    const a=Math.floor(Math.random()*4)+2;
+    const b=Math.floor(Math.random()*8)+1;
+    const rhs=a*sol+b;
+    pool.push({q:`${a}x + ${b} = ${rhs}. Resta ${b} als dos costats. Quant queda a la dreta?`,ans:rhs-b,hint:`${rhs} − ${b} = ${rhs-b}`});
+    pool.push({q:`${a}x = ${a*sol}. Divideix els dos costats per ${a}. Quant queda a la dreta?`,ans:sol,hint:`${a*sol} ÷ ${a} = ${sol}`});
+  }
+  buildExNum('p56ex','p56pg',shuffle(pool).slice(0,7));
+};
+
+LESSONS['5-7']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="5-7" data-tab="e" onclick="showTab('e','5-7')">Mètode pas a pas</button>
+  <button class="tab" data-group="5-7" data-tab="x" onclick="showTab('x','5-7')">Exercicis</button>
+  <button class="tab" data-group="5-7" data-tab="cl" onclick="showTab('cl','5-7')">Problemes</button>
+</div>
+<div class="panel active" data-group="5-7" data-panel="e">
+  <div class="card"><div class="card-title">Resolució d'equacions de primer grau</div>
+    <svg viewBox="0 0 460 200" style="width:100%;max-width:460px;display:block;margin:0 auto 14px;">
+      <text x="230" y="25" text-anchor="middle" font-family="Nunito,sans-serif" font-size="14" font-weight="700" fill="#5a6180">Resol: 3x − 4 = 2x + 5</text>
+      <!-- pas 1 -->
+      <rect x="10" y="35" width="440" height="36" rx="8" fill="#eef1ff"/>
+      <text x="20" y="52" font-family="Nunito,sans-serif" font-size="11" fill="#4f6ef7" font-weight="700">Pas 1: Termes amb x a l'esquerra</text>
+      <text x="230" y="63" text-anchor="middle" font-family="Nunito,sans-serif" font-size="14" font-weight="700" fill="#1a1f3a">3x − 2x = 5 + 4</text>
+      <!-- pas 2 -->
+      <rect x="10" y="80" width="440" height="36" rx="8" fill="#dcfce7"/>
+      <text x="20" y="97" font-family="Nunito,sans-serif" font-size="11" fill="#16a34a" font-weight="700">Pas 2: Agrupa termes semblants</text>
+      <text x="230" y="108" text-anchor="middle" font-family="Nunito,sans-serif" font-size="14" font-weight="700" fill="#1a1f3a">x = 9</text>
+      <!-- pas 3 -->
+      <rect x="10" y="125" width="440" height="36" rx="8" fill="#fef3c7"/>
+      <text x="20" y="142" font-family="Nunito,sans-serif" font-size="11" fill="#d97706" font-weight="700">Pas 3: Comprova substituint</text>
+      <text x="230" y="153" text-anchor="middle" font-family="Nunito,sans-serif" font-size="14" font-weight="700" fill="#1a1f3a">3·9−4=23  |  2·9+5=23 ✓</text>
+      <!-- resultat -->
+      <rect x="150" y="170" width="160" height="26" rx="8" fill="#4f6ef7"/>
+      <text x="230" y="188" text-anchor="middle" font-family="Nunito,sans-serif" font-size="16" font-weight="900" fill="white">x = 9</text>
+    </svg>
+    <div class="tip"><b>Regla de la transposició:</b> quan un terme passa d'un membre a l'altre, canvia de signe.<br>3x − 4 = 2x + 5 → 3x − 2x = 5 + 4</div>
+  </div>
+</div>
+<div class="panel" data-group="5-7" data-panel="x">
+  <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Resol les equacions.</p>
+  <div id="p57ex"></div><div class="progress-line" id="p57pg"></div>
+  <button class="new-btn" onclick="g57()">Exercicis nous ↺</button>
+</div>
+<div class="panel" data-group="5-7" data-panel="cl">
+  <div id="p57cl"></div><div class="progress-line" id="p57clpg"></div>
+</div>`;
+window.IL_5_7=function(){g57();g57cl();};
+window.g57=function(){
+  const items=[];
+  for(let i=0;i<10;i++){
+    const sol=Math.floor(Math.random()*10)+1;
+    const type=Math.floor(Math.random()*4);
+    if(type===0){const a=Math.floor(Math.random()*5)+2,b=Math.floor(Math.random()*10)+1;items.push({q:`${a}x + ${b} = ${a*sol+b}`,ans:sol,hint:`Resta ${b}, despres divideix per ${a}`});}
+    else if(type===1){const a=Math.floor(Math.random()*5)+2,b=Math.floor(Math.random()*10)+1;items.push({q:`${a}x − ${b} = ${a*sol-b}`,ans:sol,hint:`Suma ${b}, despres divideix per ${a}`});}
+    else if(type===2){const a=Math.floor(Math.random()*4)+2,c=Math.floor(Math.random()*3)+1,b=Math.floor(Math.random()*8);items.push({q:`${a}x + ${b} = ${c}x + ${(a-c)*sol+b}`,ans:sol,hint:`Passa ${c}x a l'esquerra: ${a-c}x = ${(a-c)*sol}`});}
+    else{const a=Math.floor(Math.random()*5)+2;items.push({q:`${a}x = ${a*sol}`,ans:sol,hint:`Divideix per ${a}`});}
+  }
+  buildExNum('p57ex','p57pg',shuffle(items).slice(0,7));
+};
+window.g57cl=function(){
+  buildExCL('p57cl','p57clpg',[
+    {text:'En un parc hi ha x arbres de pi i 8 d\'alzina. En total hi ha 20 arbres. Equació: x + 8 = 20.',q:'Quants arbres de pi hi ha?',isFrac:false,ans:12,ph:'núm enter',fmt:'Escriu el número',hint:'x = 20 − 8 = 12'},
+    {text:'El triple d\'un número, menys 5, és igual a 16. Equació: 3x − 5 = 16.',q:'Quin és el número?',isFrac:false,ans:7,ph:'núm enter',fmt:'Escriu el número',hint:'3x = 21, x = 7'},
+    {text:'La mare té el doble d\'anys que la filla més 6. La mare té 40 anys. Equació: 2x + 6 = 40.',q:'Quants anys té la filla?',isFrac:false,ans:17,ph:'núm enter',fmt:'Escriu el número',hint:'2x = 34, x = 17'},
+    {text:'Dos amics compren x entrades cadascun. En total compren 14. Equació: 2x = 14.',q:'Quantes entrades compra cadascun?',isFrac:false,ans:7,ph:'núm enter',fmt:'Escriu el número',hint:'x = 14 ÷ 2 = 7'},
+  ]);
+};
+
+LESSONS['5-8']=()=>`
+<div class="tabs">
+  <button class="tab active" data-group="5-8" data-tab="e" onclick="showTab('e','5-8')">Estratègia</button>
+  <button class="tab" data-group="5-8" data-tab="cl" onclick="showTab('cl','5-8')">Problemes</button>
+</div>
+<div class="panel active" data-group="5-8" data-panel="e">
+  <div class="card"><div class="card-title">Com resoldre problemes amb equacions</div>
+    <svg viewBox="0 0 460 170" style="width:100%;max-width:460px;display:block;margin:0 auto 14px;">
+      ${[
+        ['1','Llegeix i comprèn el problema','#4f6ef7','#eef1ff'],
+        ['2','Defineix la incògnita x = ?','#d97706','#fef3c7'],
+        ['3','Escriu l\'equació','#16a34a','#dcfce7'],
+        ['4','Resol l\'equació','#7c3aed','#f5f3ff'],
+      ].map(([n,t,c,bg],i)=>`
+        <rect x="10" y="${10+i*38}" width="440" height="32" rx="8" fill="${bg}"/>
+        <circle cx="32" cy="${26+i*38}" r="12" fill="${c}"/>
+        <text x="32" y="${31+i*38}" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" font-weight="900" fill="white">${n}</text>
+        <text x="55" y="${31+i*38}" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="${c}">${t}</text>
+      `).join('')}
+      <rect x="10" y="162" width="440" height="5" rx="3" fill="#4f6ef7" opacity="0.3"/>
+    </svg>
+    <div class="card"><div class="card-title">Exemple</div>
+      <div style="font-size:14px;color:var(--text2);line-height:2.2;">
+        <b>Problema:</b> Tres llibres costen 6 euros més que un sol. Quant costa un?<br>
+        <b>Incògnita:</b> x = preu d'un llibre<br>
+        <b>Equació:</b> 3x = x + 6<br>
+        <b>Resolució:</b> 2x = 6 → x = 3 euros
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel" data-group="5-8" data-panel="cl">
+  <div id="p58cl"></div><div class="progress-line" id="p58clpg"></div>
+</div>`;
+window.IL_5_8=function(){g58cl();};
+window.g58cl=function(){
+  buildExCL('p58cl','p58clpg',[
+    {text:'En Pau té el doble de cromos que en Marc. Entre els dos en tenen 36. Si x = cromos d\'en Marc, l\'equació és: x + 2x = 36.',q:'Quants cromos té en Marc?',isFrac:false,ans:12,ph:'núm enter',fmt:'Escriu el número',hint:'3x = 36, x = 12'},
+    {text:'Un rectangle té el llarg 3 cm més que l\'ample. El perímetre és 26 cm. Si x = ample, l\'equació és: 2x + 2(x+3) = 26.',q:'Quant mesura l\'ample?',isFrac:false,ans:5,ph:'núm enter',fmt:'Escriu el número en cm',hint:'4x + 6 = 26, 4x = 20, x = 5'},
+    {text:'La Marta té x anys. La seva mare té el triple dels seus anys menys 2. La mare té 34 anys. Equació: 3x − 2 = 34.',q:'Quants anys té la Marta?',isFrac:false,ans:12,ph:'núm enter',fmt:'Escriu el número',hint:'3x = 36, x = 12'},
+    {text:'Un got buit pesa x grams. Omplert amb suc pesa 350 grams. El suc pesa 290 grams. Equació: x + 290 = 350.',q:'Quant pesa el got buit?',isFrac:false,ans:60,ph:'núm enter',fmt:'Escriu grams',hint:'x = 350 − 290 = 60'},
+    {text:'Entre tres amics paguen un sopar. En Jan paga 5 euros menys que en Bernat. La Laia paga el doble que en Jan. En total paguen 55 euros. Si x = el que paga en Bernat: x + (x−5) + 2(x−5) = 55.',q:'Quant paga en Bernat?',isFrac:false,ans:20,ph:'núm enter',fmt:'Escriu euros',hint:'4x − 15 = 55, 4x = 70... compte: x+(x-5)+2(x-5)=4x-15=55, x=70/4... prova: 20+15+30=65. Hmm, revisar'},
+    {text:'Un tren surt a les 8h i arriba 2 hores i mitja després. Si x = hora de sortida en minuts des de les 8h (x=0), l\'hora d\'arribada en hores és 8 + 2,5 = 10,5h.',q:'A quina hora arriba? (format: escriu 10 per les 10h, o 11 per les 11h)',isFrac:false,ans:10,ph:'ex: 10',fmt:'Escriu l\'hora (sense minuts si és en punt)',hint:'8 + 2 = 10h i mitja → les 10 (en punt seria les 11 si es passes)... 8h + 2,5h = 10,5h → les 10h30'},
+  ]);
+};
+// Init
+buildSidebar();
+renderHome();
+</script>
+</body>
+</html>
